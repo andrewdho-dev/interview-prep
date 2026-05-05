@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0a">
+<title>42dot 1차 인터뷰 · 학습 도구</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=Pretendard+Variable:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Light theme (default) */
+    --bg: #fafaf7;
+    --bg-elevated: #ffffff;
+    --bg-subtle: #f0efe9;
+    --bg-tinted: #f5f4ee;
+    --ink: #0a0a0a;
+    --ink-muted: #4a4a48;
+    --ink-soft: #6b6b67;
+    --line: #d4d2c8;
+    --line-subtle: #e8e6dd;
+    --accent: #c2410c;
+    --accent-soft: #fed7aa;
+    --highlight: #fef9c3;
+    --success: #166534;
+    --shadow: 0 1px 2px rgba(10, 10, 10, 0.04), 0 4px 12px rgba(10, 10, 10, 0.04);
+    --shadow-elevated: 0 2px 4px rgba(10, 10, 10, 0.06), 0 12px 32px rgba(10, 10, 10, 0.08);
+  }
+
+  [data-theme="dark"] {
+    --bg: #0d0c0a;
+    --bg-elevated: #181714;
+    --bg-subtle: #1a1916;
+    --bg-tinted: #161512;
+    --ink: #f5f4ee;
+    --ink-muted: #b8b6ac;
+    --ink-soft: #888680;
+    --line: #2a2824;
+    --line-subtle: #1f1e1a;
+    --accent: #fb923c;
+    --accent-soft: #431407;
+    --highlight: #422006;
+    --success: #4ade80;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.2);
+    --shadow-elevated: 0 2px 4px rgba(0, 0, 0, 0.4), 0 12px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+  body {
+    font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.55;
+    transition: background 0.3s ease, color 0.3s ease;
+    padding-bottom: 80px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Subtle paper grain */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.4;
+    z-index: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.04 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  [data-theme="dark"] body::before { opacity: 0.06; }
+
+  .serif { font-family: 'Fraunces', 'Pretendard Variable', serif; font-feature-settings: "ss01" 1; }
+  .mono { font-family: 'IBM Plex Mono', 'Menlo', monospace; }
+
+  /* === HEADER === */
+  header.site {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    padding: 14px 20px 12px;
+    transition: background 0.3s;
+  }
+
+  .header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    max-width: 920px;
+    margin: 0 auto;
+  }
+
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .brand-mark {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 19px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .brand-mark em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .brand-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 480px) { .brand-meta { display: none; } }
+
+  .theme-toggle {
+    background: none;
+    border: 1px solid var(--line);
+    color: var(--ink-muted);
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+
+  .theme-toggle:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  /* === HERO === */
+  .hero {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 36px 20px 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .eyebrow::before {
+    content: '';
+    width: 16px;
+    height: 1px;
+    background: var(--accent);
+    display: inline-block;
+  }
+
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: clamp(28px, 6vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 400;
+  }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--ink-muted);
+    line-height: 1.55;
+    max-width: 560px;
+  }
+
+  /* === PROGRESS === */
+  .progress-card {
+    max-width: 920px;
+    margin: 24px auto 0;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .progress-inner {
+    background: var(--bg-tinted);
+    border: 1px solid var(--line-subtle);
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .progress-track {
+    flex: 1;
+    height: 6px;
+    background: var(--line-subtle);
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 999px;
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    width: 0%;
+  }
+
+  .progress-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+
+  .progress-label strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .reset-btn {
+    background: none;
+    border: none;
+    color: var(--ink-soft);
+    cursor: pointer;
+    font-size: 11px;
+    text-decoration: underline;
+    text-decoration-color: var(--line);
+    text-underline-offset: 2px;
+    padding: 4px;
+  }
+
+  .reset-btn:hover { color: var(--accent); text-decoration-color: var(--accent); }
+
+  /* === MODE TABS === */
+  .mode-tabs {
+    max-width: 920px;
+    margin: 28px auto 0;
+    padding: 0 20px;
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid var(--line);
+    overflow-x: auto;
+    scrollbar-width: none;
+    position: relative;
+    z-index: 1;
+  }
+
+  .mode-tabs::-webkit-scrollbar { display: none; }
+
+  .mode-tab {
+    background: none;
+    border: none;
+    padding: 12px 4px;
+    margin: 0 14px 0 0;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    white-space: nowrap;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .mode-tab:hover { color: var(--ink); }
+
+  .mode-tab.active {
+    color: var(--ink);
+    border-bottom-color: var(--accent);
+  }
+
+  .mode-tab .tab-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-soft);
+    background: var(--bg-subtle);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  .mode-tab.active .tab-num {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+
+  /* === MAIN === */
+  main {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 24px 20px 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .pane { display: none; }
+  .pane.active { display: block; animation: paneEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+
+  @keyframes paneEnter {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* === SECTIONS (Browse Mode) === */
+  .section {
+    margin-bottom: 36px;
+    scroll-margin-top: 80px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .section-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  .section-content { line-height: 1.7; }
+
+  .section-content p { margin-bottom: 14px; color: var(--ink-muted); }
+  .section-content p strong { color: var(--ink); font-weight: 600; }
+  .section-content em { font-style: italic; color: var(--accent); }
+
+  .section-content h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 500;
+    margin: 24px 0 10px;
+    color: var(--ink);
+  }
+
+  .section-content h4 {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 18px 0 8px;
+    color: var(--ink);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .section-content ul {
+    list-style: none;
+    margin-bottom: 16px;
+    padding-left: 0;
+  }
+
+  .section-content ul li {
+    position: relative;
+    padding-left: 18px;
+    margin-bottom: 8px;
+    color: var(--ink-muted);
+  }
+
+  .section-content ul li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .section-content ul li strong { color: var(--ink); font-weight: 600; }
+
+  /* Tables for company context */
+  .info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 14px;
+    border: 1px solid var(--line-subtle);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .info-table th {
+    background: var(--bg-tinted);
+    text-align: left;
+    padding: 10px 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--line-subtle);
+  }
+
+  .info-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--line-subtle);
+    color: var(--ink-muted);
+    vertical-align: top;
+  }
+
+  .info-table td:first-child {
+    font-weight: 600;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .info-table tr:last-child td { border-bottom: none; }
+
+  .info-table .highlight-row td {
+    background: var(--accent-soft);
+    color: var(--ink);
+  }
+
+  [data-theme="dark"] .info-table .highlight-row td {
+    background: var(--accent-soft);
+    color: var(--ink);
+  }
+
+  /* Callout */
+  .callout {
+    background: var(--bg-tinted);
+    border-left: 3px solid var(--accent);
+    padding: 14px 16px;
+    margin: 16px 0;
+    border-radius: 0 8px 8px 0;
+    font-size: 14px;
+    color: var(--ink-muted);
+  }
+
+  .callout strong { color: var(--ink); }
+
+  .callout-warning {
+    background: var(--highlight);
+    border-left-color: #ca8a04;
+  }
+
+  [data-theme="dark"] .callout-warning {
+    background: var(--highlight);
+    border-left-color: #fbbf24;
+  }
+
+  /* === QUIZ MODE === */
+  .quiz-intro {
+    background: var(--bg-tinted);
+    border: 1px solid var(--line-subtle);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    color: var(--ink-muted);
+    line-height: 1.6;
+  }
+
+  .quiz-intro strong { color: var(--ink); }
+
+  .qa-card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--line-subtle);
+    border-radius: 14px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .qa-card.studied {
+    border-color: var(--success);
+    background: linear-gradient(to right, var(--bg-elevated), var(--bg-tinted));
+  }
+
+  .qa-card:hover { box-shadow: var(--shadow); }
+
+  .qa-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px 18px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .qa-card-tag {
+    flex-shrink: 0;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 4px 8px;
+    border-radius: 6px;
+    margin-top: 2px;
+  }
+
+  .qa-card-question {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  .qa-card-toggle {
+    flex-shrink: 0;
+    color: var(--ink-soft);
+    font-size: 18px;
+    transition: transform 0.3s;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .qa-card.open .qa-card-toggle { transform: rotate(45deg); color: var(--accent); }
+
+  .qa-card-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .qa-card.open .qa-card-body { max-height: 4000px; }
+
+  .qa-card-body-inner {
+    padding: 0 18px 18px;
+    border-top: 1px dashed var(--line-subtle);
+    margin-top: 0;
+    padding-top: 14px;
+  }
+
+  .qa-strategy {
+    font-size: 13px;
+    color: var(--ink-soft);
+    background: var(--bg-tinted);
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    line-height: 1.55;
+  }
+
+  .qa-strategy strong { color: var(--accent); }
+
+  .qa-answer {
+    background: var(--bg-tinted);
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--ink-muted);
+    position: relative;
+    border: 1px solid var(--line-subtle);
+  }
+
+  .qa-answer::before {
+    content: '모범 답변 골격';
+    position: absolute;
+    top: -9px;
+    left: 12px;
+    background: var(--bg);
+    padding: 0 8px;
+    font-size: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .qa-answer p { margin-bottom: 10px; }
+  .qa-answer p:last-child { margin-bottom: 0; }
+  .qa-answer strong { color: var(--ink); font-weight: 600; }
+
+  .qa-keypoints {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--ink-muted);
+    margin-top: 10px;
+  }
+
+  .qa-keypoints h5 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    margin-bottom: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+  }
+
+  .qa-keypoints ul { padding-left: 16px; }
+  .qa-keypoints li { margin-bottom: 4px; list-style: '· '; padding-left: 4px; }
+
+  .qa-card-footer {
+    display: flex;
+    gap: 8px;
+    padding: 12px 18px 16px;
+    border-top: 1px solid var(--line-subtle);
+    background: var(--bg-tinted);
+  }
+
+  .study-btn {
+    flex: 1;
+    background: var(--bg-elevated);
+    border: 1px solid var(--line);
+    color: var(--ink-muted);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+
+  .study-btn:hover { border-color: var(--ink); color: var(--ink); }
+
+  .study-btn.studied {
+    background: var(--success);
+    border-color: var(--success);
+    color: white;
+  }
+
+  [data-theme="dark"] .study-btn.studied {
+    color: var(--bg);
+  }
+
+  /* === CHEATSHEET MODE === */
+  .cheat-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  @media (min-width: 720px) {
+    .cheat-grid { grid-template-columns: 1fr 1fr; }
+    .cheat-card.span-2 { grid-column: span 2; }
+  }
+
+  .cheat-card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--line-subtle);
+    border-radius: 12px;
+    padding: 16px;
+    transition: all 0.2s;
+  }
+
+  .cheat-card:hover {
+    border-color: var(--ink);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
+  }
+
+  .cheat-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .cheat-label::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .cheat-headline {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+
+  .cheat-headline em { font-style: italic; color: var(--accent); }
+
+  .cheat-body {
+    font-size: 13px;
+    color: var(--ink-muted);
+    line-height: 1.55;
+  }
+
+  .cheat-body strong { color: var(--ink); font-weight: 600; }
+
+  .stat-card .cheat-headline {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  /* Keyword chip */
+  .kw-chip-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .kw-chip {
+    background: var(--bg-tinted);
+    border: 1px solid var(--line-subtle);
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--ink-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .kw-chip:hover, .kw-chip.flipped {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+
+  [data-theme="dark"] .kw-chip:hover,
+  [data-theme="dark"] .kw-chip.flipped {
+    color: var(--bg);
+  }
+
+  /* === BOTTOM NAV (mobile) === */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-elevated);
+    border-top: 1px solid var(--line);
+    padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
+    z-index: 100;
+    display: flex;
+    justify-content: space-around;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  @media (min-width: 768px) { .bottom-nav { display: none; } body { padding-bottom: 0; } }
+
+  .nav-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 6px 4px;
+    cursor: pointer;
+    color: var(--ink-soft);
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    border-radius: 8px;
+    transition: color 0.2s;
+  }
+
+  .nav-btn .nav-icon {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  .nav-btn.active { color: var(--accent); }
+
+  /* === SECTION NAV (Browse Mode TOC) === */
+  .toc {
+    background: var(--bg-tinted);
+    border: 1px solid var(--line-subtle);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 28px;
+  }
+
+  .toc-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+  }
+
+  .toc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .toc-link {
+    color: var(--ink-muted);
+    text-decoration: none;
+    font-size: 14px;
+    padding: 4px 0;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    transition: color 0.15s;
+  }
+
+  .toc-link:hover { color: var(--accent); }
+  .toc-link .toc-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-soft);
+    min-width: 24px;
+  }
+
+  /* Print/share quick buttons */
+  .quick-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  .quick-btn {
+    background: var(--bg-elevated);
+    border: 1px solid var(--line);
+    color: var(--ink-muted);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+
+  .quick-btn:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  /* Footer */
+  footer.site {
+    max-width: 920px;
+    margin: 40px auto 0;
+    padding: 24px 20px;
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--ink-soft);
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace;
+    line-height: 1.6;
+  }
+
+  footer.site em { color: var(--accent); font-style: italic; font-family: 'Fraunces', serif; }
+
+  /* Mark text (highlight) */
+  mark {
+    background: var(--highlight);
+    color: var(--ink);
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-weight: 500;
+  }
+
+  [data-theme="dark"] mark { color: var(--ink); }
+
+  /* Collapsible "expand all" button */
+  .quiz-controls {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    background: none;
+    border: 1px solid var(--line);
+    color: var(--ink-muted);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  /* Selection */
+  ::selection { background: var(--accent-soft); color: var(--ink); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--ink-soft); }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="header-row">
+    <div class="brand">
+      <span class="brand-mark">42dot <em>·</em> Prep</span>
+      <span class="brand-meta">1차 인터뷰 · 1H</span>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="테마 전환">
+      <span id="themeIcon">◐</span>
+    </button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">Platform TPM · 1st Round</div>
+  <h1 class="serif">한 시간 안에 <em>전달</em>되어야 할,<br>나라는 사람의 모양.</h1>
+  <p class="hero-sub">서류는 통과했다. 이제 회사가 확인하고 싶은 건 글로 본 narrative가 사람에게서도 같은 결로 나오는지다. 출퇴근길에 흘려 읽고, 면접 직전 30분에 다시 짚을 수 있도록.</p>
+</section>
+
+<section class="progress-card">
+  <div class="progress-inner">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <span class="progress-label"><strong id="studiedCount">0</strong> / 10 학습</span>
+    <button class="reset-btn" id="resetBtn">리셋</button>
+  </div>
+</section>
+
+<nav class="mode-tabs" id="modeTabs">
+  <button class="mode-tab active" data-pane="browse">
+    <span class="tab-num">01</span> Browse
+  </button>
+  <button class="mode-tab" data-pane="quiz">
+    <span class="tab-num">02</span> Q&amp;A 연습
+  </button>
+  <button class="mode-tab" data-pane="cheatsheet">
+    <span class="tab-num">03</span> Cheatsheet
+  </button>
+</nav>
+
+<main>
+
+<!-- ===================== BROWSE MODE ===================== -->
+<div class="pane active" id="pane-browse">
+
+  <div class="toc">
+    <div class="toc-label">목차</div>
+    <div class="toc-list">
+      <a href="#sec-meta" class="toc-link"><span class="toc-num">01</span>1차 인터뷰의 성격</a>
+      <a href="#sec-context" class="toc-link"><span class="toc-num">02</span>회사 컨텍스트</a>
+      <a href="#sec-questions" class="toc-link"><span class="toc-num">03</span>예상 질문 5개 카테고리</a>
+      <a href="#sec-counter" class="toc-link"><span class="toc-num">04</span>역질문 5개</a>
+      <a href="#sec-checklist" class="toc-link"><span class="toc-num">05</span>직전 30분 체크리스트</a>
+      <a href="#sec-meta-eval" class="toc-link"><span class="toc-num">06</span>면접관의 3가지 평가축</a>
+    </div>
+  </div>
+
+  <div class="section" id="sec-meta">
+    <div class="section-header">
+      <span class="section-num mono">01</span>
+      <h2 class="section-title serif">1차 인터뷰의 성격</h2>
+    </div>
+    <div class="section-content">
+      <p>서류 합격 → <strong>1시간 1차</strong> → 3시간 2차 → 최종 구조에서, 1차의 시간 분배는 보통 다음과 같다.</p>
+      <ul>
+        <li><strong>40~50분</strong> · hiring manager / chapter lead가 핵심 경험 검증 + JD 핏 확인</li>
+        <li><strong>10~15분</strong> · 지원자 질문 (이게 면접의 절반이라고 봐도 된다)</li>
+      </ul>
+      <p>이 단계에서 떨어지는 사람은 보통 두 부류다.</p>
+      <ol style="padding-left: 18px; color: var(--ink-muted); margin: 10px 0 14px;">
+        <li style="margin-bottom: 8px;"><strong>이력서를 똑같이 말로 반복하는 사람</strong> — 글로 본 걸 또 듣고 싶은 게 아니라, 이력서에 못 담은 의사결정 디테일과 trade-off를 듣고 싶다.</li>
+        <li><strong>회사를 모르고 온 사람</strong> — 42dot이 아니라 일반적인 자동차 SW 회사로 답변한다.</li>
+      </ol>
+      <div class="callout">
+        <strong>나의 강점</strong>은 (1)에 빠지지 않을 정도로 사례 디테일이 풍부하다는 것. <strong>약점</strong>은 (2) — Pleos / SDV / 양산 압력에 대한 구체 이해가 충분하지 않을 수 있다는 점이다. 그래서 회사 컨텍스트 섹션을 먼저 깔고 간다.
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-context">
+    <div class="section-header">
+      <span class="section-num mono">02</span>
+      <h2 class="section-title serif">인터뷰 전 머릿속에 박아둘 회사 컨텍스트</h2>
+    </div>
+    <div class="section-content">
+      <h3>2.1 42dot의 현재 위치</h3>
+      <ul>
+        <li>2019년 자율주행 스타트업으로 창업, 2022년 현대차·기아에 완전 인수</li>
+        <li><strong>2024년 7월 제2 판교테크노밸리로 이전</strong> (1,500명 규모)</li>
+        <li><strong>현대자동차그룹의 글로벌 소프트웨어 센터</strong> 역할</li>
+        <li>AVP 본부(전략·표준)와 42dot(실행 엔진)의 원팀 체계</li>
+        <li><mark>2025.12 송창현 CEO 사임 → 2026.01 박민우 신임 사장</mark> (AVP 본부장 겸직)</li>
+      </ul>
+      <div class="callout callout-warning">
+        리더십 변화는 <strong>면접에서 먼저 꺼내지 말 것</strong>. 면접관이 묻거나 언급하면 "변화의 시기에 합류하는 것에 흥미를 느낀다" 정도로만.
+      </div>
+
+      <h3>2.2 Pleos 제품 패밀리</h3>
+      <table class="info-table">
+        <thead>
+          <tr><th>제품</th><th>정체</th><th>지원 포지션 연관성</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Pleos Vehicle OS</td><td>차량 운영체제 (HPVC + Zone Controller)</td><td>간접</td></tr>
+          <tr><td>Pleos Connect</td><td>AAOS 기반 인포테인먼트</td><td>간접</td></tr>
+          <tr class="highlight-row"><td>Pleos Playground</td><td>차량용 앱 개발자 플랫폼 (SDK, API, 디자인 가이드, 앱 마켓)</td><td><strong>직접</strong></td></tr>
+          <tr><td>Atria AI</td><td>카메라 기반 자율주행 모델</td><td>간접</td></tr>
+          <tr><td>Gleo AI</td><td>음성 AI 에이전트</td><td>간접</td></tr>
+          <tr><td>Pleos Fleet</td><td>차량 관제 솔루션 (기아 PV5 탑재)</td><td>간접</td></tr>
+        </tbody>
+      </table>
+      <p>JD에서 명시한 <strong>"Pleos App Market, Playground 데이터 제품"</strong> = Pleos Playground 그룹. 즉 합류 시 차량용 앱 생태계 + 개발자 플랫폼 + 데이터 제품 영역에서 일하게 된다.</p>
+
+      <h3>2.3 양산 일정 (이게 가장 중요)</h3>
+      <ul>
+        <li><strong>2026년 2분기</strong> · Pleos Connect 탑재 첫 신차 출시</li>
+        <li><strong>2030년</strong> · 2,000만 대 확대 적용 목표</li>
+        <li>지금 이 시점은 "5년에 걸쳐 2천만 대로 확장"의 출발선</li>
+        <li>JD가 말하는 <em>"플랫폼 인증 체계 전환·자동화"는 이 일정을 맞추기 위해 절박한 과제</em></li>
+        <li>글로벌 파트너 · 구글(AAOS), 삼성(SmartThings), 네이버, 우버, 쏘카, 유니티</li>
+      </ul>
+
+      <h3>2.4 나의 narrative와의 연결고리</h3>
+      <div class="callout">
+        <strong>"OEM별/차종별 반복 인증 → 플랫폼 인증 표준화"</strong>는 내가 BAT에서 <strong>"시장별 반복 구축 → 글로벌 플랫폼 표준화"</strong>로 풀어온 문제와 정확히 같은 형태.<br>→ 이걸 <em>면접 첫 5분 안에</em> 자연스럽게 깔아야 한다.
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-questions">
+    <div class="section-header">
+      <span class="section-num mono">03</span>
+      <h2 class="section-title serif">예상 질문 5개 카테고리</h2>
+    </div>
+    <div class="section-content">
+      <p>아래 카테고리별 상세 질문과 모범 답변은 <strong>Q&A 연습</strong> 탭에서 카드로 학습할 수 있다.</p>
+      <ul>
+        <li><strong>A · 자기소개 / 지원 동기</strong> — 첫 5분에 무조건 나옴 (Q1, Q2)</li>
+        <li><strong>B · BAT 경험 검증</strong> — 가장 깊이 들어감, 20~30분 소요 (Q3, Q4, Q5, Q6)</li>
+        <li><strong>C · JD-Andrew 갭 검증</strong> — 불편하지만 100% 나옴 (Q7, Q8)</li>
+        <li><strong>D · TPM의 사고방식 검증</strong> (Q9, Q10)</li>
+        <li><strong>E · 역질문</strong> — 10~15분, 면접의 절반</li>
+      </ul>
+      <div class="quick-actions">
+        <button class="quick-btn" onclick="switchPane('quiz')">→ Q&amp;A 연습으로 이동</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-counter">
+    <div class="section-header">
+      <span class="section-num mono">04</span>
+      <h2 class="section-title serif">역질문 5개</h2>
+    </div>
+    <div class="section-content">
+      <p>면접관이 hiring manager일 가능성이 높으니, <strong>"이 자리에서만 답할 수 있는 질문"</strong>을 던져야 한다. 검색하면 나오는 질문은 절대 금지.</p>
+
+      <h4>① 조직 구조 이해</h4>
+      <div class="callout">"Pleos Playground 그룹과 AVP 본부의 일은 어떻게 분장되나요? Platform TPM이 두 조직 사이에서 어느 쪽 의사결정에 더 가깝게 일하게 되나요?"</div>
+      <p>→ 회사를 공부하고 왔다는 시그널 + 본인이 어느 layer에서 일할지 사전 파악</p>
+
+      <h4>② 양산 일정의 현실</h4>
+      <div class="callout">"2026년 2분기 첫 신차 출시 일정이 이미 발표된 상황인데, 이 시점에 합류하는 TPM이 첫 분기에 가장 critical하게 처리해야 할 일이 무엇인지 가늠이 가능할까요?"</div>
+      <p>→ "내가 합류했을 때 뭘 해야 하나"를 직접 묻는 것. 실무 감각 시그널</p>
+
+      <h4>③ 표준화의 실제 진척도</h4>
+      <div class="callout">"JD에서 말씀하신 'Platform-level Certification 체계' 전환은 현재 어느 정도 단계에 있나요? 이미 몇 개 차종에 시도 중인지, 아니면 첫 정의 단계인지 궁금합니다."</div>
+      <p>→ 회사가 이 일을 0에서 시작하는지, 일부 진행 중인지에 따라 합류 후 일이 완전히 다르다</p>
+
+      <h4>④ 글로벌 파트너 협업의 현실</h4>
+      <div class="callout">"구글 AAOS, 네이버, 삼성 SmartThings 같은 외부 파트너와의 기술 협상이 일상적인 업무라고 들었는데, TPM이 이런 협상에 단독으로 들어가나요, 아니면 PM/엔지니어와 팀으로 들어가나요?"</div>
+
+      <h4>⑤ 평가 / 성장 (마지막 즈음)</h4>
+      <div class="callout">"이 포지션의 첫 6개월 성과는 어떻게 평가되나요? 회사가 이 자리에서 어떤 시그널을 보고 'leveling up할 수 있는 사람이다'라고 판단하시는지 궁금합니다."</div>
+
+      <div class="callout callout-warning">
+        <strong>절대 묻지 말 것</strong> · 연봉 / 복지 / 휴가 (1차에서 자살) · 회사 홈페이지에 적힌 사실 확인 ("재택근무 되나요?") · 상장 계획 / 주가 전망 (정치적)
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="sec-checklist">
+    <div class="section-header">
+      <span class="section-num mono">05</span>
+      <h2 class="section-title serif">인터뷰 직전 30분 체크리스트</h2>
+    </div>
+    <div class="section-content">
+      <h4>외워둘 키워드 (최소 1줄씩 설명 가능)</h4>
+      <ul>
+        <li>Pleos Vehicle OS / Connect / Playground (3개 차이점)</li>
+        <li>AAOS (Android Automotive OS, 안드로이드 기반 차량 OS)</li>
+        <li>HPVC + Zone Controller (디커플링 아키텍처의 핵심)</li>
+        <li>ASPICE / ISO 26262 (자동차 SW 인증 표준 — 이름만이라도)</li>
+        <li>2026년 2분기 / 2,000만 대 / 2030년 (양산 일정 숫자)</li>
+      </ul>
+      <h4>1분 자기소개 한 번 소리 내어 연습</h4>
+      <p>머릿속에서 매끄러운 답변도 입 밖에 내면 어색하다. 면접 30분 전 거울 보고 한 번. 시간 재면서.</p>
+      <h4>옷차림 / 환경</h4>
+      <p>대면이면 비즈니스 캐주얼이 안전. 화상이면 조명 + 배경 + 마이크 미리 점검. 42dot은 스타트업이지만 모기업이 현대 → 양쪽 톤이 섞여 있다. <strong>너무 캐주얼은 risk</strong>.</p>
+    </div>
+  </div>
+
+  <div class="section" id="sec-meta-eval">
+    <div class="section-header">
+      <span class="section-num mono">06</span>
+      <h2 class="section-title serif">면접관이 평가하고 있을 3가지</h2>
+    </div>
+    <div class="section-content">
+      <p>면접관은 1시간 내내 머릿속으로 다음 세 가지를 채점하고 있다.</p>
+      <ol style="padding-left: 18px; color: var(--ink-muted); margin: 10px 0; counter-reset: meta;">
+        <li style="margin-bottom: 14px;"><strong>이 사람이 우리 문제를 이해하는가?</strong><br>→ 회사 컨텍스트 + JD를 자기 언어로 재진술 가능?</li>
+        <li style="margin-bottom: 14px;"><strong>이 사람이 우리 팀에서 같이 일하기에 무리가 없는가?</strong><br>→ 자기 약점을 인지? trade-off 사고가 가능? 자기 결정에 self-criticism 가능?</li>
+        <li><strong>이 사람을 채용하는 risk가 무엇인가?</strong><br>→ 연차 미달 / 도메인 미경험 — 이걸 어떻게 mitigate하는지 본인이 답을 가지고 있는가?</li>
+      </ol>
+      <div class="callout">답변 하나하나가 이 세 질문 중 하나를 깎거나 쌓고 있다는 감각으로 임할 것.</div>
+
+      <h3 style="margin-top: 28px;">마지막 한 가지 — 톤</h3>
+      <p>42dot은 (현대 모기업 대비) 스타트업 결의 회사다. 면접관이 어느 결을 띠는지는 첫 5분에 보일 텐데, <strong>상대 톤에 맞춰 거울 효과로 따라가는 게 안전</strong>하다. 스타트업 톤이면 자기소개도 더 캐주얼하게, 대기업 톤이면 더 formal하게.</p>
+      <p>다만 <em>나의 강점은 "솔직하고 구체적"</em>이라는 점. 어느 톤이든 그 강점은 유지되어야 한다. 톤은 표면, 콘텐츠는 본질.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===================== QUIZ MODE ===================== -->
+<div class="pane" id="pane-quiz">
+
+  <div class="quiz-intro">
+    카드를 탭하면 모범 답변이 펼쳐진다. <strong>먼저 질문만 보고 머릿속에서 답을 만든 뒤</strong>, 카드를 펼쳐 비교하는 순서로 학습할 것. <strong>학습 완료</strong>를 누르면 진행도가 저장된다 (브라우저 로컬에만).
+  </div>
+
+  <div class="quiz-controls">
+    <button class="filter-btn active" data-filter="all">전체 10</button>
+    <button class="filter-btn" data-filter="A">A · 자기소개</button>
+    <button class="filter-btn" data-filter="B">B · BAT 검증</button>
+    <button class="filter-btn" data-filter="C">C · JD 갭</button>
+    <button class="filter-btn" data-filter="D">D · TPM 사고</button>
+  </div>
+
+  <div id="qaContainer"></div>
+
+</div>
+
+<!-- ===================== CHEATSHEET MODE ===================== -->
+<div class="pane" id="pane-cheatsheet">
+
+  <div class="quiz-intro">
+    <strong>면접 직전 30분에 한 번 훑을 카드들.</strong> 키워드 칩을 탭하면 짧은 설명이 뜬다.
+  </div>
+
+  <div class="cheat-grid">
+
+    <div class="cheat-card stat-card">
+      <div class="cheat-label">양산 일정</div>
+      <div class="cheat-headline">2026 <em>Q2</em></div>
+      <div class="cheat-body">Pleos Connect 탑재 첫 신차 출시 시점. 이미 발표된 일정이라 변경 불가.</div>
+    </div>
+
+    <div class="cheat-card stat-card">
+      <div class="cheat-label">확장 목표</div>
+      <div class="cheat-headline">20<em>M</em> 대</div>
+      <div class="cheat-body"><strong>2030년까지 2,000만 대</strong> 확대 적용. 5년에 걸친 스케일업이 platform 표준화 압력의 본질.</div>
+    </div>
+
+    <div class="cheat-card span-2">
+      <div class="cheat-label">핵심 narrative</div>
+      <div class="cheat-headline serif">시장별 반복 구축 →<br><em>플랫폼 표준화</em></div>
+      <div class="cheat-body">42dot의 "차종별 반복 인증 → Platform-level Certification"은 내가 BAT에서 풀어온 문제와 같은 형태. <strong>면접 첫 5분 안에 깔아야 할 메시지</strong>.</div>
+    </div>
+
+    <div class="cheat-card span-2">
+      <div class="cheat-label">Pleos 제품 패밀리</div>
+      <div class="cheat-headline serif">3분만 외워두면 이미 70%</div>
+      <div class="cheat-body">
+        <div class="kw-chip-list">
+          <span class="kw-chip" data-tip="차량 운영체제. HPVC + Zone Controller로 구성된 디커플링 아키텍처.">Pleos Vehicle OS</span>
+          <span class="kw-chip" data-tip="AAOS 기반 인포테인먼트 시스템. 2026 Q2 신차 탑재.">Pleos Connect</span>
+          <span class="kw-chip" data-tip="차량용 앱 개발자 플랫폼. SDK, API, 디자인 가이드, 앱 마켓 포함. 내가 지원한 그룹.">Pleos Playground ★</span>
+          <span class="kw-chip" data-tip="카메라 기반 엔드투엔드 자율주행 모델. 800만 화소 카메라 8대 + 레이더 1개.">Atria AI</span>
+          <span class="kw-chip" data-tip="음성 AI 에이전트. 자연어 명령 처리.">Gleo AI</span>
+          <span class="kw-chip" data-tip="차량 관제 솔루션. 기아 PV5에 첫 탑재.">Pleos Fleet</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cheat-card">
+      <div class="cheat-label">조직 구조</div>
+      <div class="cheat-headline serif">AVP &times; 42dot</div>
+      <div class="cheat-body"><strong>AVP 본부</strong>(현대차그룹) · 전략·표준·양산 연결 / <strong>42dot</strong>(자회사) · 실행 엔진. 원팀 체계.</div>
+    </div>
+
+    <div class="cheat-card">
+      <div class="cheat-label">리더십 변화</div>
+      <div class="cheat-headline serif">박민우 <em>신임</em></div>
+      <div class="cheat-body">2025.12 송창현 사임 → 2026.01 박민우 사장 체제. <strong>먼저 꺼내지 말 것</strong>. 묻거든 "변화의 시기에 합류하는 것에 흥미를 느낀다".</div>
+    </div>
+
+    <div class="cheat-card span-2">
+      <div class="cheat-label">자동차 SW 도메인 키워드</div>
+      <div class="cheat-headline serif">최소 한 줄씩 설명 가능해야</div>
+      <div class="cheat-body">
+        <div class="kw-chip-list">
+          <span class="kw-chip" data-tip="Android Automotive OS. 구글이 만든 차량 전용 안드로이드 OS. Pleos Connect 기반.">AAOS</span>
+          <span class="kw-chip" data-tip="High-Performance Vehicle Computer. 차량 두뇌 역할. 여러 도메인 컨트롤러를 하나로 통합.">HPVC</span>
+          <span class="kw-chip" data-tip="Software-Defined Vehicle. 하드웨어와 소프트웨어를 디커플링한 차량.">SDV</span>
+          <span class="kw-chip" data-tip="자동차 SW 프로세스 평가 모델. 차량 SW 인증 표준 중 하나.">ASPICE</span>
+          <span class="kw-chip" data-tip="차량용 SW 기능안전 표준. 가장 까다로운 인증 영역.">ISO 26262</span>
+          <span class="kw-chip" data-tip="Electrical & Electronic Architecture. 차량 전기·전자 구조.">E&E</span>
+          <span class="kw-chip" data-tip="Over-The-Air. 무선 SW 업데이트.">OTA</span>
+          <span class="kw-chip" data-tip="Neural Processing Unit. 차량 내 AI 추론 가속기.">NPU</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cheat-card span-2">
+      <div class="cheat-label">자기소개 60초 골격</div>
+      <div class="cheat-headline serif">현재 → 과거 → 지원 이유</div>
+      <div class="cheat-body" style="line-height: 1.7;">
+        <strong>① 현재 (20s)</strong> · BAT에서 한·일 두 시장 D2C 플랫폼을 PM으로. 시장별로 따로 짓던 이커머스를 글로벌 Adobe 스택 위에 표준화하는 일.<br>
+        <strong>② 과거 (15s)</strong> · 그 전 Elice에서 K-12 AI LMS 팀장 (9억 연구과제 수주). TikTok / Samsung SDS 런던.<br>
+        <strong>③ 지원 이유 (15s)</strong> · "차량별 반복 인증 → 플랫폼 표준" 문제가 BAT에서 매일 푸는 문제와 같은 형태라고 느꼈다.
+      </div>
+    </div>
+
+    <div class="cheat-card">
+      <div class="cheat-label">함정 #1</div>
+      <div class="cheat-headline serif">완벽주의...<br><em>금지</em></div>
+      <div class="cheat-body">"잘못된 결정 사례" 질문에 "제가 너무 완벽주의여서..." 류는 즉시 탈락. 진짜 사례를 사실 → 당시 합리적이었던 이유 → 학습으로 구성.</div>
+    </div>
+
+    <div class="cheat-card">
+      <div class="cheat-label">함정 #2</div>
+      <div class="cheat-headline serif">이력서 <em>낭독</em><br>금지</div>
+      <div class="cheat-body">글로 본 걸 그대로 말로 옮기지 말 것. 면접관이 듣고 싶은 건 이력서에 못 담은 <strong>의사결정의 trade-off</strong>.</div>
+    </div>
+
+    <div class="cheat-card span-2">
+      <div class="cheat-label">PM vs TPM (Q9 답변 frame)</div>
+      <div class="cheat-headline serif">Trade-off의 <em>위치</em>가 다르다</div>
+      <div class="cheat-body">
+        <strong>일반 PM</strong> · 비즈니스 가치 vs 일정·리소스의 trade-off<br>
+        <strong>TPM</strong> · 거기에 더해 <em>기술 부채 누적 vs 단기 출시 / 표준화 vs 시장별 유연성 / 자동화 ROI vs 수동 게이트</em> 같은 기술적 trade-off를 stakeholder에게 설명·합의하는 일.
+      </div>
+    </div>
+
+    <div class="cheat-card">
+      <div class="cheat-label">역질문 1순위</div>
+      <div class="cheat-headline serif">조직 분장</div>
+      <div class="cheat-body">"Playground 그룹과 AVP 본부의 일이 어떻게 분장되나요? TPM이 어느 쪽 의사결정에 더 가깝나요?"</div>
+    </div>
+
+    <div class="cheat-card">
+      <div class="cheat-label">역질문 2순위</div>
+      <div class="cheat-headline serif">첫 분기 critical</div>
+      <div class="cheat-body">"이 시점에 합류하는 TPM이 첫 분기에 가장 critical하게 처리해야 할 일이 무엇인가요?"</div>
+    </div>
+
+  </div>
+
+</div>
+
+</main>
+
+<footer class="site">
+  Made for <em>Andrew</em> &middot; updated 2026.05<br>
+  학습 진행도는 이 브라우저에만 저장됩니다.
+</footer>
+
+<!-- Mobile bottom nav -->
+<nav class="bottom-nav" id="bottomNav">
+  <button class="nav-btn active" data-pane="browse">
+    <span class="nav-icon">📖</span>
+    <span>Browse</span>
+  </button>
+  <button class="nav-btn" data-pane="quiz">
+    <span class="nav-icon">◐</span>
+    <span>Q&amp;A</span>
+  </button>
+  <button class="nav-btn" data-pane="cheatsheet">
+    <span class="nav-icon">⚡</span>
+    <span>Cheat</span>
+  </button>
+</nav>
+
+<script>
+/* ============================================
+   QUIZ DATA
+============================================ */
+const quizData = [
+  {
+    id: 'q1',
+    cat: 'A',
+    catLabel: 'A · 자기소개',
+    q: '자기소개 부탁드립니다.',
+    strategy: '<strong>60~90초.</strong> 이력서 시간순 나열 ❌. <strong>현재 → 과거 핵심 → 지원 이유</strong> 3블록.',
+    a: `<p>현재 BAT에서 한국과 일본 두 시장의 D2C 디지털 마케팅 플랫폼을 PM으로 맡고 있습니다. 이 일의 본질은 시장마다 따로 짓던 이커머스를 하나의 글로벌 Adobe 스택 위에 표준화하면서, 각 시장이 필요한 차이만 모듈로 덧붙이는 구조로 재편하는 작업입니다.</p>
+<p>이전에는 Elice라는 에듀테크 스타트업에서 K-12 AI LMS의 PM 팀장으로, 교육부 RFP에 맞춰 프로토타입을 구축해 9억 규모 연구과제를 수주하고 양산까지 끌고 간 경험이 있고, 그 전 TikTok과 삼성SDS 런던 지사에서 Trust&amp;Safety 데이터 분석과 RPA PoC를 다뤘습니다.</p>
+<p>이번에 42dot Platform TPM JD를 보고, <strong>차량별로 반복되는 인증을 플랫폼 단위 표준으로 전환한다는 문제의식이 제가 BAT에서 지난 2년간 매일 풀어온 문제와 정확히 같은 형태</strong>라고 느꼈고, 그래서 지원하게 됐습니다.</p>`,
+    keypoints: [
+      '"지난 2년간 매일 풀어온 문제와 같은 형태" — JD 키워드를 자연어로 거꾸로 매핑',
+      '회사 이름 외 디테일(MAU, 9억) 섞어서 구체성 확보',
+      '60~90초 타임 박스 — 길어지면 첫인상이 흐려진다'
+    ]
+  },
+  {
+    id: 'q2',
+    cat: 'A',
+    catLabel: 'A · 지원 동기',
+    q: '왜 42dot에 지원하셨어요? / 왜 자동차로 도메인을 옮기시나요?',
+    strategy: '자기소개서 마지막 단락 그대로 말하지 말 것. 더 솔직한 톤으로 한 단계 더 들어가기.',
+    a: `<p>두 가지 이유입니다.</p>
+<p><strong>첫째, 문제의 결이 맞다고 판단해서</strong>입니다. 42dot이 지향하는 Platform-level Certification은 차종이 늘어날수록 인증·검증을 매번 반복하지 않아도 되도록 표준 체계를 만드는 일인데, 제가 BAT에서 매일 다루는 문제 — 시장이 늘어날수록 마케팅 플랫폼을 매번 다시 짓지 않아도 되도록 표준화하는 일 — 과 구조적으로 같습니다.</p>
+<p><strong>둘째, 일정의 절박성</strong>입니다. Pleos Connect가 2026년 2분기 출시 신차에 들어가고 2030년까지 2천만 대로 확대된다고 발표하셨는데, 이 5년의 스케일업이 가능하려면 차종별 반복 검증을 표준 인증 체계로 전환하는 일이 필수일 거라고 이해했습니다. 그 과제 한복판에서 일하고 싶다는 게 더 직접적인 동기입니다.</p>
+<p>자동차는 저에게 처음입니다. 다만 지난 5~6년간 에듀테크, 소셜, FMCG로 도메인을 옮기면서 배운 건, <strong>좋은 TPM의 가치는 도메인 전문성보다 복잡한 요구사항을 표준화 가능한 구조로 재구성하는 사고방식에서 나온다</strong>는 것이었습니다. 도메인 학습 곡선은 제가 감당해야 할 몫이라고 생각합니다.</p>`,
+    keypoints: [
+      '두 가지 이유로 나누기 — "왜 42dot인가"의 답이 "왜 자동차인가"의 답이기도',
+      '2,000만 대 / 2030년 직접 언급 → "공부하고 옴" 시그널',
+      '도메인 약점은 짧게 인정 후 학습 의지로 마무리'
+    ]
+  },
+  {
+    id: 'q3',
+    cat: 'B',
+    catLabel: 'B · BAT 검증',
+    q: '일본 myGlo 프로젝트를 좀 더 구체적으로 설명해주세요. 가장 어려웠던 의사결정은 뭐였어요?',
+    strategy: '핵심 질문. STAR가 아니라 <strong>의사결정의 trade-off</strong>를 보여줄 것.',
+    a: `<p>myGlo Japan은 일본 시장이 자체 운영하던 Sitecore 기반 CMS를 그룹 글로벌 솔루션인 Adobe Commerce + AEM으로 이관하는 프로젝트입니다. MAU 150만 규모, 일본 마케팅·CRM·콘텐츠 부서 전체가 stakeholder입니다.</p>
+<p>가장 어려웠던 의사결정은 <strong>'일본 고유 비즈니스 로직을 글로벌 솔루션 위에서 어디까지 커스터마이징할 것인가'</strong>였습니다. 표준 컴포넌트로 다 커버하면 일본 영업 흐름이 깨지고, 너무 많이 커스터마이징하면 다음 시장이 같은 패턴을 못 쓰게 됩니다 — 표준화의 의미가 사라지죠.</p>
+<p>결국 <strong>40여 종의 커스텀 컴포넌트를 정의하면서, 그중 어느 것이 '일본 고유'이고 어느 것이 '다른 시장에도 재사용 가능한 패턴'인지를 분류</strong>했습니다. 후자는 컴포넌트 스펙 가이드로 문서화해서 다음 시장이 그대로 가져갈 수 있게 했고, 전자만 일본 고유 모듈로 격리시켰습니다.</p>
+<p>이 결정이 옳았는지는 한국 신규 이커머스를 설계할 때 검증됐습니다. 한국 프로젝트에서 일본에서 만든 컴포넌트 중 일부를 그대로 재활용할 수 있었습니다.</p>`,
+    keypoints: [
+      'STAR 형식 X — "trade-off가 무엇이었나" 중심',
+      '"고유 vs 재사용" 분류 자체가 표준화 사고방식의 증명',
+      '한국 프로젝트에서 검증되었음 → 결정이 사후 정당화됐음'
+    ]
+  },
+  {
+    id: 'q4',
+    cat: 'B',
+    catLabel: 'B · 벤더 관리',
+    q: '벤더가 두 개(Cognizant, ITC Infotech)인데 그 사이에서 충돌이 생긴 사례가 있나요? 어떻게 풀었어요?',
+    strategy: '거의 100% 나오는 질문. JD의 "외부 파트너사와의 기술 전담 창구" 검증. <strong>실제 충돌 사례 1~2개를 미리 대본화해 둘 것.</strong>',
+    a: `<p>최근 사례 하나 말씀드리면, 일본 PLP에 무한 스크롤을 도입하는 티켓을 한 벤더가 클라이언트 사이드 필터 동작 기준으로 설계하고 있었는데, 동시에 다른 벤더가 서버 사이드 필터링 개선 티켓을 진행 중이었습니다. 두 티켓이 동시에 머지되면 필터 동작이 충돌하는 상황이었습니다.</p>
+<p>두 벤더 다 자기 티켓 일정을 양보하기 어려운 상황이어서, 제가 한 일은 <strong>두 티켓의 비즈니스 목적을 다시 정의</strong>하는 거였습니다. 무한 스크롤 티켓은 '카탈로그 탐색 경험 개선'이 목적이었고, 서버 필터링 티켓은 '검색 성능 최적화'가 목적이었습니다. 두 목적은 충돌하지 않으니 결국 구현 순서와 인터페이스 정의만 합의하면 됐습니다.</p>
+<p>결과적으로 서버 필터링을 먼저 안정화하고, 그 위에 무한 스크롤이 호출하는 API 스펙을 양 벤더가 함께 합의해서 정의하는 방식으로 두 티켓이 직렬로 들어가게 됐습니다.</p>`,
+    keypoints: [
+      '"벤더 X가 잘못했다" 톤 절대 금지 → 항상 비즈니스 목적 정렬로 frame',
+      '구체 티켓 이름 사용 (PLP, 무한 스크롤) → 실무자임을 증명',
+      '"스펙을 합의했다"로 결론 → 표준화 사고방식의 동일 패턴'
+    ]
+  },
+  {
+    id: 'q5',
+    cat: 'B',
+    catLabel: 'B · 기술 깊이',
+    q: 'Magento, Adobe Commerce, Salesforce... 이 스택을 직접 운영해본 경험이 있는 건가요? 아니면 PM 관점에서만?',
+    strategy: '함정 질문일 수 있음. 솔직하게 답하되 약점이 강점으로 보이게.',
+    a: `<p>직접 코드 레벨로 Magento를 짠 적은 없습니다. PM 관점에서 운영합니다. 다만 컴포넌트 스펙을 정의하거나 벤더가 제안한 솔루션 아키텍처를 검토하려면, 데이터 모델·API 동작·이벤트 플로우 같은 내부 동작을 이해해야 해서, 각 솔루션의 핵심 모듈 구조와 일반적인 customization 패턴은 학습해 왔습니다.</p>
+<p>예를 들어 <strong>Adobe Commerce에서 catalogue 모델이 EAV 기반이라는 점이 일본 시장의 다중 브랜드 전시 요구사항을 어떻게 제약하는지</strong> 정도는 벤더와 토론할 수 있는 수준입니다.</p>
+<p>이번 자동차 도메인에서도 같은 학습 곡선을 거치게 될 것이라고 생각하고 있습니다.</p>`,
+    keypoints: [
+      '"직접 짠 적 없다" 인정 후 → "왜 그래도 토론 가능한지" 구체 예로 증명',
+      'EAV 같은 디테일 한 줄이 "기술 학습에 진지" 시그널',
+      '학습 곡선 인정으로 자동차 도메인 갭 미리 mitigate'
+    ]
+  },
+  {
+    id: 'q6',
+    cat: 'B',
+    catLabel: 'B · UAT',
+    q: 'UAT를 직접 리드하셨다고 했는데, UAT의 가장 큰 risk가 뭐였나요?',
+    strategy: '표면적 답변(테스트 케이스, 결함 추적)으로 가면 평가 안 됨. <strong>stakeholder management</strong> 차원으로 끌어올릴 것.',
+    a: `<p>UAT의 가장 큰 risk는 결함 자체보다 <strong>'결함의 우선순위에 대한 합의'</strong>라고 봅니다. 현업 부서는 자기 영역의 결함이 가장 critical하다고 보고, 개발 팀은 release 일정 압박을 받고, 저는 그 사이에서 어느 결함이 진짜 release blocker인지를 판단해야 합니다.</p>
+<p>일본 myGlo UAT에서는 현업 5개 부서가 각자 결함을 등록했는데, 첫 일주일에 등록된 결함만 200건이 넘었습니다. 이걸 그대로 vendor에게 넘기면 일정이 깨지고, 무시하면 release 후에 운영 사고가 납니다.</p>
+<p>그래서 제가 한 일은 <strong>결함을 'business logic 위반' / 'UX 일관성' / 'edge case'로 분류하고, business logic 위반만 release blocker로 정의</strong>한 거였습니다. 그리고 이 분류 기준을 현업 부서에 미리 합의받았습니다. 합의가 있으니 release 직전에 우선순위 다툼이 없었습니다.</p>`,
+    keypoints: [
+      '숫자(200건) — 실제 규모 감각 보여주기',
+      '"결함 분류 기준을 stakeholder와 미리 합의" — 진짜 PM의 일',
+      '결과 = "release 직전 우선순위 다툼이 없었다" — 측정 가능한 outcome'
+    ]
+  },
+  {
+    id: 'q7',
+    cat: 'C',
+    catLabel: 'C · JD 갭',
+    q: 'JD에 Jira, Gerrit 활용한 자동화가 있는데, ADO만 쓰셨네요. 학습 부담 있을까요?',
+    strategy: '이미 자기소개서에서 다룬 논리. 면접에서는 더 구체화.',
+    a: `<p>도구 자체의 학습은 길지 않을 거라고 봅니다. ADO와 Jira는 이슈 모델·sprint·release 개념이 거의 1:1 대응되고, Gerrit은 코드 리뷰 도구라 직접 운영해보진 않았지만 Pull Request 워크플로우 자체는 제가 사이드 프로젝트에서 GitHub로 일상적으로 쓰는 방식과 동일합니다.</p>
+<p>진짜 시간이 걸리는 건 <strong>'자동화를 어디까지 밀어붙일 것인가'에 대한 조직 문화 학습</strong>입니다. ADO에서도 release pipeline을 자동화해본 경험은 있는데, <strong>자동화의 ROI가 작을 때는 의도적으로 수동 게이트를 남겨두는 판단</strong>을 해야 합니다. 어떤 단계가 자동화 가능하고 어떤 단계가 사람의 판단을 남겨야 하는지에 대한 조직 합의가 더 중요한 학습 포인트라고 생각합니다.</p>`,
+    keypoints: [
+      '도구 학습은 "길지 않을 것"으로 단호하게 → 약점을 길게 끌면 약점이 됨',
+      '진짜 학습 포인트는 다른 곳이라고 frame → 도구 약점을 우회',
+      '"자동화 ROI vs 수동 게이트" trade-off 사고 보여주기'
+    ]
+  },
+  {
+    id: 'q8',
+    cat: 'C',
+    catLabel: 'C · 도메인',
+    q: '모빌리티 도메인이 처음이신데, 가장 빠르게 배워야 할 게 뭐라고 생각하세요?',
+    strategy: '"이 사람이 자기 약점을 정확히 인지하고 있는가"를 보는 질문. 학습 계획을 보여줄 것.',
+    a: `<p>세 가지 정도로 정리해두고 있습니다.</p>
+<p><strong>첫째, 차량 SW의 안전 인증 체계</strong> — ASPICE, ISO 26262 같은 자동차 산업 특유의 인증 표준이 어떻게 구조화되어 있는지. 제가 BAT에서 다룬 데이터 거버넌스(GDPR, 개인정보보호법)와 구조는 비슷할 거라고 추측하지만 실제로 어떤 항목이 release gate가 되는지는 학습이 필요합니다.</p>
+<p><strong>둘째, AAOS 기반 인포테인먼트 환경의 제약</strong> — 일반 모바일 앱과 달리 주행 중 사용성, 시선 분산 최소화, NPU 자원 제약 같은 도메인 특수 제약이 있을 텐데, 이게 platform-level 표준에 어떻게 반영되어야 하는지.</p>
+<p><strong>셋째, OEM 양산 프로세스의 Gate 체계</strong> — JD에서 'OEM의 전통적인 양산 프로세스(Gate)'라고 표현하신 부분이 어떤 단계로 구성되는지. 이게 결국 인증 표준화의 대상이니까요.</p>
+<p>이 세 가지는 합류 후 첫 3개월 안에 일하면서 빠르게 익히고 싶은 영역입니다.</p>`,
+    keypoints: [
+      'ASPICE, ISO 26262 — 면접 전 위키 5분만 읽고 외워둘 것',
+      '구체 숫자(첫 3개월) — 실행 가능한 학습 계획임을 시그널',
+      '"기존 경험과 어떻게 연결되는지" 항상 같이 말하기'
+    ]
+  },
+  {
+    id: 'q9',
+    cat: 'D',
+    catLabel: 'D · TPM 사고',
+    q: 'PM과 TPM의 차이가 뭐라고 생각하세요? 본인은 어느 쪽이세요?',
+    strategy: '의외로 자주 나옴. 회사가 이 포지션을 일반 PM이 아닌 TPM으로 정의한 이유를 묻는 것.',
+    a: `<p>구분하는 방식은 사람마다 다르겠지만, 제가 일하면서 체감한 차이는 <strong>'trade-off의 위치'</strong>입니다.</p>
+<p>일반 PM은 <strong>비즈니스 가치 vs 일정·리소스</strong> 사이의 trade-off를 주로 다룹니다. TPM은 거기에 더해서 <strong>'기술 부채 누적 vs 단기 출시 속도', '표준화 vs 시장별 유연성', '자동화 ROI vs 수동 게이트의 안전성'</strong> 같은 기술적 trade-off를 stakeholder에게 설명하고 합의하는 일을 주로 다룬다고 봅니다.</p>
+<p>저는 후자에 더 가깝다고 생각합니다. BAT에서 일본 컴포넌트를 '재사용 가능한 패턴' vs '일본 고유 모듈'로 분류한 것도 결국 표준화 vs 유연성 trade-off였고, 한국 신규 이커머스에서 T-shirt sizing으로 벤더별 견적을 검토한 것도 기술 부채와 단기 일정 사이의 trade-off였습니다.</p>`,
+    keypoints: [
+      '"기술도 잘 알고 비즈니스도 잘 압니다" 류는 즉시 generic 지원자로 전락',
+      '"trade-off의 위치가 다르다"는 frame이 가장 안전',
+      '본인 사례를 바로 trade-off 언어로 매핑'
+    ]
+  },
+  {
+    id: 'q10',
+    cat: 'D',
+    catLabel: 'D · self-awareness',
+    q: '본인이 만든 결정 중 잘못됐다고 판단했던 사례 있어요?',
+    strategy: '거의 100% 나오는 self-awareness 질문. 너무 사소하지도 너무 치명적이지도 않은 사례를 미리 1~2개 준비.',
+    a: `<p>구조 · <strong>사실 → 왜 그렇게 결정했나(당시엔 합리적이었음) → 어떻게 알았나 → 무엇을 배웠나</strong></p>
+<p>준비할 만한 사례 후보:</p>
+<ul style="padding-left: 18px; margin: 8px 0;">
+<li style="margin-bottom: 6px;">Elice MoE 프로젝트 초반 RFP 해석에서 일정 산정을 too aggressive하게 했던 일</li>
+<li style="margin-bottom: 6px;">BAT 한국 프로젝트 초기 BRD에서 특정 기능의 우선순위를 잘못 잡아 두 sprint 후 재정의한 일</li>
+<li>벤더 협상에서 무엇인가를 너무 일찍 양보해 후속 협상 카드를 잃었던 일</li>
+</ul>
+<p style="margin-top: 12px;"><strong>금지 답변</strong> · "제가 너무 완벽주의여서..." 류는 AI slop, 즉시 탈락.</p>`,
+    keypoints: [
+      '면접 전에 본인 사례 1~2개를 실제 대본화해두기',
+      '결정 자체를 비판하지 말고 "당시엔 합리적이었지만 정보가 부족했다"로',
+      '학습으로 마무리 → 그 학습이 지금 어떻게 작동하는지 한 줄'
+    ]
+  }
+];
+
+/* ============================================
+   STATE & RENDERING
+============================================ */
+const STORAGE_KEY = '42dot-prep-v1';
+let state = {
+  studied: {},
+  theme: 'light',
+  currentPane: 'browse'
+};
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) state = { ...state, ...JSON.parse(raw) };
+  } catch (e) { /* noop */ }
+}
+
+function saveState() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+  catch (e) { /* noop */ }
+}
+
+function applyTheme() {
+  document.documentElement.setAttribute('data-theme', state.theme);
+  document.getElementById('themeIcon').textContent = state.theme === 'dark' ? '◑' : '◐';
+  document.querySelector('meta[name="theme-color"]').setAttribute('content', state.theme === 'dark' ? '#0d0c0a' : '#fafaf7');
+}
+
+function updateProgress() {
+  const total = quizData.length;
+  const done = Object.values(state.studied).filter(Boolean).length;
+  const pct = (done / total) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('studiedCount').textContent = done;
+}
+
+function renderQuiz(filter = 'all') {
+  const container = document.getElementById('qaContainer');
+  const items = filter === 'all' ? quizData : quizData.filter(q => q.cat === filter);
+  container.innerHTML = items.map(q => `
+    <article class="qa-card${state.studied[q.id] ? ' studied' : ''}" data-id="${q.id}">
+      <div class="qa-card-header" onclick="toggleCard('${q.id}')">
+        <span class="qa-card-tag">${q.catLabel}</span>
+        <h3 class="qa-card-question">${q.q}</h3>
+        <span class="qa-card-toggle">+</span>
+      </div>
+      <div class="qa-card-body">
+        <div class="qa-card-body-inner">
+          <div class="qa-strategy"><strong>전략 · </strong>${q.strategy}</div>
+          <div class="qa-answer">${q.a}</div>
+          <div class="qa-keypoints">
+            <h5>키 포인트</h5>
+            <ul>${q.keypoints.map(k => `<li>${k}</li>`).join('')}</ul>
+          </div>
+        </div>
+      </div>
+      <div class="qa-card-footer">
+        <button class="study-btn${state.studied[q.id] ? ' studied' : ''}" onclick="toggleStudied('${q.id}', event)">
+          ${state.studied[q.id] ? '✓ 학습 완료' : '학습 완료로 표시'}
+        </button>
+      </div>
+    </article>
+  `).join('');
+}
+
+function toggleCard(id) {
+  const card = document.querySelector(`.qa-card[data-id="${id}"]`);
+  if (card) card.classList.toggle('open');
+}
+
+function toggleStudied(id, event) {
+  event.stopPropagation();
+  state.studied[id] = !state.studied[id];
+  saveState();
+  updateProgress();
+  // re-render only the affected card to keep open state on others
+  const card = document.querySelector(`.qa-card[data-id="${id}"]`);
+  if (card) {
+    card.classList.toggle('studied', !!state.studied[id]);
+    const btn = card.querySelector('.study-btn');
+    btn.classList.toggle('studied', !!state.studied[id]);
+    btn.textContent = state.studied[id] ? '✓ 학습 완료' : '학습 완료로 표시';
+  }
+}
+
+function switchPane(name) {
+  state.currentPane = name;
+  document.querySelectorAll('.pane').forEach(p => p.classList.toggle('active', p.id === 'pane-' + name));
+  document.querySelectorAll('.mode-tab').forEach(t => t.classList.toggle('active', t.dataset.pane === name));
+  document.querySelectorAll('.nav-btn').forEach(t => t.classList.toggle('active', t.dataset.pane === name));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ============================================
+   INIT
+============================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  loadState();
+  applyTheme();
+  renderQuiz();
+  updateProgress();
+
+  // Theme toggle
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    state.theme = state.theme === 'dark' ? 'light' : 'dark';
+    saveState();
+    applyTheme();
+  });
+
+  // Pane switching (top tabs + bottom nav)
+  document.querySelectorAll('.mode-tab, .nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => switchPane(btn.dataset.pane));
+  });
+
+  // Quiz filters
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderQuiz(btn.dataset.filter);
+    });
+  });
+
+  // Reset progress
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (confirm('학습 진행도를 초기화할까?')) {
+      state.studied = {};
+      saveState();
+      updateProgress();
+      renderQuiz(document.querySelector('.filter-btn.active')?.dataset.filter || 'all');
+    }
+  });
+
+  // Keyword chips (toggle tip on tap)
+  document.querySelectorAll('.kw-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const tip = chip.dataset.tip;
+      if (!tip) return;
+      // toggle a popover-like behaviour
+      if (chip.classList.contains('flipped')) {
+        chip.classList.remove('flipped');
+        chip.textContent = chip.dataset.original || chip.textContent;
+      } else {
+        if (!chip.dataset.original) chip.dataset.original = chip.textContent;
+        chip.classList.add('flipped');
+        chip.textContent = tip;
+      }
+    });
+  });
+
+  // Smooth scroll for TOC
+  document.querySelectorAll('.toc-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+});
+</script>
+
+</body>
+</html>
