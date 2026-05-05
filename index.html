@@ -772,164 +772,6 @@
     color: var(--bg);
   }
 
-  /* === D-DAY BADGE === */
-  .dday-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--ink);
-    color: var(--bg);
-    padding: 6px 12px 6px 10px;
-    border-radius: 999px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    margin-bottom: 14px;
-  }
-
-  .dday-badge .dot {
-    width: 6px;
-    height: 6px;
-    background: var(--accent);
-    border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.85); }
-  }
-
-  .dday-meta {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--ink-soft);
-    margin-bottom: 14px;
-    letter-spacing: 0.04em;
-  }
-
-  .dday-meta strong { color: var(--accent); font-weight: 600; }
-
-  /* === RESOURCE CHECKLIST === */
-  .resource-list {
-    background: var(--bg-elevated);
-    border: 1px solid var(--line-subtle);
-    border-radius: 12px;
-    padding: 14px;
-    margin-bottom: 16px;
-  }
-
-  .resource-list-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
-
-  .resource-list-title {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--accent);
-    font-weight: 600;
-  }
-
-  .resource-list-progress {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    color: var(--ink-soft);
-  }
-
-  .resource-list-progress strong {
-    color: var(--ink);
-    font-weight: 600;
-  }
-
-  .resource-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 9px 0;
-    border-top: 1px dashed var(--line-subtle);
-    cursor: pointer;
-    user-select: none;
-    transition: opacity 0.2s;
-  }
-
-  .resource-item:first-of-type { border-top: none; }
-  .resource-item:hover { opacity: 0.85; }
-  .resource-item.checked { opacity: 0.55; }
-  .resource-item.checked .resource-item-title { text-decoration: line-through; text-decoration-color: var(--ink-soft); }
-
-  .resource-checkbox {
-    flex-shrink: 0;
-    width: 18px;
-    height: 18px;
-    border: 1.5px solid var(--line);
-    border-radius: 4px;
-    margin-top: 1px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-  }
-
-  .resource-item.checked .resource-checkbox {
-    background: var(--success);
-    border-color: var(--success);
-    color: white;
-    font-size: 12px;
-  }
-
-  [data-theme="dark"] .resource-item.checked .resource-checkbox {
-    color: var(--bg);
-  }
-
-  .resource-item-body { flex: 1; min-width: 0; }
-
-  .resource-item-title {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--ink);
-    line-height: 1.4;
-    margin-bottom: 2px;
-  }
-
-  .resource-item-meta {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    color: var(--ink-soft);
-    letter-spacing: 0.03em;
-  }
-
-  .resource-link {
-    color: var(--accent);
-    text-decoration: none;
-    border-bottom: 1px dashed var(--accent);
-    padding-bottom: 0;
-  }
-
-  .resource-link:hover { border-bottom-style: solid; }
-
-  /* === Priority pill (high / medium / low for resources) === */
-  .priority-pill {
-    display: inline-block;
-    padding: 1px 6px;
-    border-radius: 3px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin-right: 4px;
-  }
-
-  .priority-pill.must { background: var(--accent); color: white; }
-  [data-theme="dark"] .priority-pill.must { color: var(--bg); }
-  .priority-pill.skim { background: var(--bg-tinted); color: var(--ink-muted); border: 1px solid var(--line); }
-
   /* === BOTTOM NAV (mobile) === */
   .bottom-nav {
     position: fixed;
@@ -1123,19 +965,15 @@
 </header>
 
 <section class="hero">
-  <div class="dday-badge">
-    <span class="dot"></span>
-    <span id="ddayCounter">D-2 · 2026.05.08 (FRI) 16:00</span>
-  </div>
-  <div class="eyebrow">Platform TPM · Pleos Playground</div>
-  <h1 class="serif"><em>45분</em> 기술 인터뷰,<br>JD와 제출 서류로 검증된다.</h1>
-  <p class="hero-sub">채용담당자의 안내에 따르면 이 라운드는 <strong>1시간이 아닌 45분</strong>이고, <strong>"기술 인터뷰"로 명시</strong>되었다. 즉 일반 핏 검증보다 기술적 깊이 검증의 비중이 더 클 가능성이 높다. 회사가 직접 보내준 4개 리소스를 <strong>먼저 시청·정독</strong>하고, 인터뷰 답변에 자연스럽게 인용할 수 있을 정도로 흡수해두는 것이 가장 큰 차별화 포인트다.</p>
+  <div class="eyebrow">Platform TPM · 1st Round</div>
+  <h1 class="serif">한 시간 안에 <em>전달</em>되어야 할,<br>나라는 사람의 모양.</h1>
+  <p class="hero-sub">서류는 통과했다. 이제 회사가 확인하고 싶은 건 글로 본 narrative가 사람에게서도 같은 결로 나오는지다. 출퇴근길에 흘려 읽고, 면접 직전 30분에 다시 짚을 수 있도록.</p>
 </section>
 
 <section class="progress-card">
   <div class="progress-inner">
     <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-    <span class="progress-label"><strong id="studiedCount">0</strong> / 12 학습</span>
+    <span class="progress-label"><strong id="studiedCount">0</strong> / 10 학습</span>
     <button class="reset-btn" id="resetBtn">리셋</button>
   </div>
 </section>
@@ -1157,109 +995,37 @@
 <!-- ===================== BROWSE MODE ===================== -->
 <div class="pane active" id="pane-browse">
 
-  <div class="resource-list" id="resourceList">
-    <div class="resource-list-header">
-      <span class="resource-list-title">회사 제공 리소스 · 시청 체크리스트</span>
-      <span class="resource-list-progress"><strong id="resourceDoneCount">0</strong> / 4 완료</span>
-    </div>
-
-    <div class="resource-item" data-id="r1">
-      <div class="resource-checkbox" id="cb-r1">✓</div>
-      <div class="resource-item-body">
-        <div class="resource-item-title">
-          <span class="priority-pill must">MUST</span>
-          Pleos 25 키노트 (플레이리스트 · 송창현 사장 발표)
-        </div>
-        <div class="resource-item-meta">
-          <a class="resource-link" href="https://youtube.com/playlist?list=PLS4edoctnapv9Kn4910H8LkoION0ePxJf" target="_blank">YouTube ↗</a> · 양산 일정·Pleos 제품 패밀리·글로벌 파트너 핵심 메시지가 모두 여기 있다
-        </div>
-      </div>
-    </div>
-
-    <div class="resource-item" data-id="r2">
-      <div class="resource-checkbox" id="cb-r2">✓</div>
-      <div class="resource-item-body">
-        <div class="resource-item-title">
-          <span class="priority-pill must">MUST</span>
-          42dot의 end-to-end 자율주행
-        </div>
-        <div class="resource-item-meta">
-          <a class="resource-link" href="https://www.youtube.com/watch?v=1ZG63np_HoU" target="_blank">YouTube ↗</a> · 회사가 자기 기술을 어떻게 설명하는지의 voice를 학습 (Atria AI 맥락)
-        </div>
-      </div>
-    </div>
-
-    <div class="resource-item" data-id="r3">
-      <div class="resource-checkbox" id="cb-r3">✓</div>
-      <div class="resource-item-body">
-        <div class="resource-item-title">
-          <span class="priority-pill skim">SKIM</span>
-          42dot Tech Blog
-        </div>
-        <div class="resource-item-meta">
-          <a class="resource-link" href="https://42dot.ai/blog" target="_blank">42dot.ai/blog ↗</a> · CES 2024 SDV 글 1개만 정독해도 SDV·HPVC·SDV OS 핵심 개념 정리
-        </div>
-      </div>
-    </div>
-
-    <div class="resource-item" data-id="r4">
-      <div class="resource-checkbox" id="cb-r4">✓</div>
-      <div class="resource-item-body">
-        <div class="resource-item-title">
-          <span class="priority-pill skim">SKIM</span>
-          42dot LinkedIn 최근 포스트
-        </div>
-        <div class="resource-item-meta">
-          <a class="resource-link" href="https://www.linkedin.com/company/42dot/posts/?feedView=all" target="_blank">LinkedIn ↗</a> · 최근 한 달 포스트만 훑어 회사의 톤·관심 영역 감 잡기
-        </div>
-      </div>
-    </div>
-  </div>
-
   <div class="toc">
     <div class="toc-label">목차</div>
     <div class="toc-list">
-      <a href="#sec-meta" class="toc-link"><span class="toc-num">01</span>45분 기술 인터뷰의 의미</a>
+      <a href="#sec-meta" class="toc-link"><span class="toc-num">01</span>1차 인터뷰의 성격</a>
       <a href="#sec-context" class="toc-link"><span class="toc-num">02</span>회사 컨텍스트</a>
-      <a href="#sec-playground" class="toc-link"><span class="toc-num">03</span>Pleos Playground 그룹의 실체</a>
-      <a href="#sec-questions" class="toc-link"><span class="toc-num">04</span>예상 질문 카테고리</a>
-      <a href="#sec-counter" class="toc-link"><span class="toc-num">05</span>역질문 5개</a>
-      <a href="#sec-checklist" class="toc-link"><span class="toc-num">06</span>직전 30분 체크리스트</a>
-      <a href="#sec-meta-eval" class="toc-link"><span class="toc-num">07</span>면접관의 평가축</a>
+      <a href="#sec-questions" class="toc-link"><span class="toc-num">03</span>예상 질문 5개 카테고리</a>
+      <a href="#sec-counter" class="toc-link"><span class="toc-num">04</span>역질문 5개</a>
+      <a href="#sec-checklist" class="toc-link"><span class="toc-num">05</span>직전 30분 체크리스트</a>
+      <a href="#sec-meta-eval" class="toc-link"><span class="toc-num">06</span>면접관의 3가지 평가축</a>
     </div>
   </div>
 
   <div class="section" id="sec-meta">
     <div class="section-header">
       <span class="section-num mono">01</span>
-      <h2 class="section-title serif">45분 기술 인터뷰의 의미</h2>
+      <h2 class="section-title serif">1차 인터뷰의 성격</h2>
     </div>
     <div class="section-content">
-      <p>채용담당자의 안내 메시지에서 세 가지 시그널을 읽어내야 한다.</p>
+      <p>서류 합격 → <strong>1시간 1차</strong> → 3시간 2차 → 최종 구조에서, 1차의 시간 분배는 보통 다음과 같다.</p>
       <ul>
-        <li><strong>시간 · 45분</strong> — 일반적 1차(60분)보다 짧다. 라포 빌딩 여유가 적고 질문 밀도가 높다는 뜻.</li>
-        <li><strong>성격 · 기술 인터뷰</strong> — 메시지에서 명시. 일반 핏 검증보다 <em>기술적 깊이 검증</em>의 비중이 더 클 가능성이 높다.</li>
-        <li><strong>준비 가이드 · "JD 및 제출 서류 기반"</strong> — 자기소개서·이력서에 적은 모든 문장이 질문의 출처가 될 수 있다. 특히 <em>구체 명사로 적은 것</em>(Cognizant, ITC Infotech, T-shirt sizing, EAV, 9억, MAU 150만 등)은 그대로 검증 대상.</li>
+        <li><strong>40~50분</strong> · hiring manager / chapter lead가 핵심 경험 검증 + JD 핏 확인</li>
+        <li><strong>10~15분</strong> · 지원자 질문 (이게 면접의 절반이라고 봐도 된다)</li>
       </ul>
-
-      <h3 style="margin-top: 24px;">시간 분배 추정</h3>
-      <ul>
-        <li><strong>5~7분</strong> · 자기소개 + 지원 동기</li>
-        <li><strong>25~30분</strong> · 기술적 깊이 검증 (BAT 사례 deep-dive, JD-역량 매칭)</li>
-        <li><strong>8~12분</strong> · 지원자 역질문</li>
-      </ul>
-
-      <div class="callout callout-warning">
-        <strong>1시간 버전과의 차이</strong> · 60분이었다면 "이력서를 똑같이 말로 반복하지 말라"는 일반론으로 충분했지만, 45분에선 <strong>모든 답변이 처음부터 trade-off / 의사결정 / 학습으로 들어가야 한다</strong>. STAR 형식의 길고 평이한 답변은 시간만 잡아먹고 임팩트가 약하다.
-      </div>
-
-      <h3 style="margin-top: 24px;">회사 제공 리소스 활용 전략</h3>
-      <p>채용담당자가 4개의 리소스를 직접 보내준 것은 단순 "참고하세요"가 아니라 <strong>"이건 우리가 어떤 회사인지 보여주는 자료다, 인터뷰에서 이 맥락을 공유하고 시작하자"</strong>는 신호다. 면접 답변에 자연스럽게 인용할 수 있어야 한다.</p>
-      <p>예시 패턴:</p>
+      <p>이 단계에서 떨어지는 사람은 보통 두 부류다.</p>
+      <ol style="padding-left: 18px; color: var(--ink-muted); margin: 10px 0 14px;">
+        <li style="margin-bottom: 8px;"><strong>이력서를 똑같이 말로 반복하는 사람</strong> — 글로 본 걸 또 듣고 싶은 게 아니라, 이력서에 못 담은 의사결정 디테일과 trade-off를 듣고 싶다.</li>
+        <li><strong>회사를 모르고 온 사람</strong> — 42dot이 아니라 일반적인 자동차 SW 회사로 답변한다.</li>
+      </ol>
       <div class="callout">
-        "보내주신 Pleos 25 키노트에서 송창현 사장님이 <em>[키워드]</em>를 강조하시는 부분이 인상적이었는데, 이게 제가 BAT에서..."
+        <strong>나의 강점</strong>은 (1)에 빠지지 않을 정도로 사례 디테일이 풍부하다는 것. <strong>약점</strong>은 (2) — Pleos / SDV / 양산 압력에 대한 구체 이해가 충분하지 않을 수 있다는 점이다. 그래서 회사 컨텍스트 섹션을 먼저 깔고 간다.
       </div>
-      <p>이 한 문장이 깔리면 면접관은 즉시 <em>"이 사람은 우리 자료를 봤고, 우리 언어로 자기 경험을 매핑할 줄 안다"</em>는 판단을 하게 된다. 1시간 인터뷰에서는 굳이 안 해도 되는 동작이지만, 45분에서는 강력한 차별화 포인트.</p>
     </div>
   </div>
 
@@ -1306,86 +1072,26 @@
         <li>글로벌 파트너 · 구글(AAOS), 삼성(SmartThings), 네이버, 우버, 쏘카, 유니티</li>
       </ul>
 
-      <h3>2.4 42dot의 자기 정의</h3>
-      <p>회사 공식 메타데이터·블로그에서 일관되게 쓰는 자기 정의는 <strong>"Mobility AI Company"</strong>다. "자율주행 회사"가 아니라 "AI 회사"로 자기 포지셔닝을 한다. 자체 LLM(42dot LLM 1.3B), Active Learning 파이프라인, Transformer 기반 인지 모델 등 AI 기술이 자율주행 / SDV / 음성 인터페이스 / 보안 등 모든 영역의 기반을 이룬다고 본다.</p>
-      <div class="callout">
-        면접에서 회사를 지칭할 때 "자율주행 회사"보다 <strong>"모빌리티 AI 회사"</strong> 또는 그냥 "42dot이 만들고 있는 플랫폼"으로 부르는 게 더 정확하다. 작은 디테일이지만 회사를 이해하는 깊이의 시그널.
-      </div>
-
-      <h3>2.5 나의 narrative와의 연결고리</h3>
+      <h3>2.4 나의 narrative와의 연결고리</h3>
       <div class="callout">
         <strong>"OEM별/차종별 반복 인증 → 플랫폼 인증 표준화"</strong>는 내가 BAT에서 <strong>"시장별 반복 구축 → 글로벌 플랫폼 표준화"</strong>로 풀어온 문제와 정확히 같은 형태.<br>→ 이걸 <em>면접 첫 5분 안에</em> 자연스럽게 깔아야 한다.
       </div>
     </div>
   </div>
 
-  <div class="section" id="sec-playground">
-    <div class="section-header">
-      <span class="section-num mono">03</span>
-      <h2 class="section-title serif">Pleos Playground 그룹의 실체</h2>
-    </div>
-    <div class="section-content">
-      <p>채용담당자 안내 메시지에서 그룹 정의를 정확히 인용하면 다음과 같다.</p>
-      <div class="callout">
-        "Pleos Playground 그룹은 <strong>Pleos App Market</strong>, <strong>Playground 데이터 제품</strong>, 그리고 <em>이를 기반으로 한 다양한 서비스·비즈니스 운영</em>을 포괄합니다."
-      </div>
-
-      <p>즉 합류하면 다루게 될 영역은 세 갈래다.</p>
-
-      <h3>① Pleos App Market</h3>
-      <ul>
-        <li>차량용 앱을 개발자들이 직접 올리고, 차량에서 사용자가 다운로드해 쓰는 <strong>차량 전용 앱 스토어</strong></li>
-        <li>2025년 Pleos 25 컨퍼런스에서 사전 공개에 26개 개발사가 베타 앱 시연</li>
-        <li>구글, 삼성(SmartThings), 네이버, 우버, 쏘카, 유니티가 글로벌 파트너로 참여</li>
-        <li>모바일 앱스토어와 다른 점: <strong>주행 안전 / 시선 분산 최소화 / NPU 자원 제약 / OTA 업데이트</strong> 등 차량 도메인 특수 제약이 인증 표준에 들어감</li>
-      </ul>
-
-      <h3>② Playground 데이터 제품</h3>
-      <ul>
-        <li>SDK·API·디자인 가이드·디버깅 도구·실차 없는 앱 테스트 환경 등 <strong>개발자 플랫폼 그 자체</strong></li>
-        <li>Pleos 디자인 가이드는 Figma 파일로 공개되어 있으며 (<a class="resource-link" href="https://pleos.ai/playground/resources/docs/docs-design-pleos/intro" target="_blank">pleos.ai/playground</a>) 디자인 토큰·컴포넌트 시스템이 명세화되어 있음</li>
-        <li>JD의 "데이터 제품"은 곧 <strong>개발자 경험(DX) 제품</strong>이라고 이해해야 함</li>
-      </ul>
-
-      <h3>③ 서비스·비즈니스 운영</h3>
-      <ul>
-        <li>App Market과 Playground 위에서 돌아가는 <strong>실제 운영 비즈니스</strong></li>
-        <li>개발자 사용량·앱 매출·차량별 활성도 등 metric을 다루는 데이터 제품 영역과 자연스럽게 연결</li>
-      </ul>
-
-      <div class="callout callout-warning">
-        <strong>핵심 통찰</strong> · 이 그룹의 일은 <em>완성차 제조</em>가 아니라 <strong>플랫폼 비즈니스</strong>이다. Andrew의 BAT 경험(D2C 이커머스 + Adobe Commerce + 다중 벤더 + 글로벌 파트너)이 자동차 제조사 직접 경험보다 오히려 더 직결되는 영역이다. 이걸 인터뷰에서 분명히 인지하고 있어야 한다 — "저는 자동차를 모르지만"으로 시작하면 안 되고, <strong>"플랫폼 비즈니스 운영 경험을 가져왔습니다"</strong>로 시작해야 한다.
-      </div>
-
-      <h3>BAT 경험 → Playground 매핑</h3>
-      <table class="info-table">
-        <thead>
-          <tr><th>BAT (현재)</th><th>Pleos Playground</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Adobe Commerce + AEM (글로벌 솔루션 위 시장별 모듈)</td><td>Pleos Vehicle OS + AAOS (글로벌 플랫폼 위 차종별 앱)</td></tr>
-          <tr><td>Cognizant, ITC Infotech (외부 벤더 기술 협상)</td><td>구글, 삼성, 네이버, 우버 (글로벌 파트너 기술 협상)</td></tr>
-          <tr><td>40+ 커스텀 컴포넌트 표준화 가이드 (시장별 재사용)</td><td>App Market 컴포넌트·디자인 가이드 표준화 (차종별 재사용)</td></tr>
-          <tr><td>UAT / 결함 분류 / release blocker 정의</td><td>Platform-level Certification / 안전 인증 / release gate</td></tr>
-          <tr><td>일본 → 한국 시장 확장 (1.5M → 2M+ MAU)</td><td>2026 Q2 신차 → 2030년 2,000만 대 확장</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
   <div class="section" id="sec-questions">
     <div class="section-header">
-      <span class="section-num mono">04</span>
-      <h2 class="section-title serif">예상 질문 카테고리</h2>
+      <span class="section-num mono">03</span>
+      <h2 class="section-title serif">예상 질문 5개 카테고리</h2>
     </div>
     <div class="section-content">
-      <p>아래 카테고리별 상세 질문과 모범 답변은 <strong>Q&A 연습</strong> 탭에서 카드로 학습할 수 있다. <strong>45분 인터뷰</strong> 시간 분배에 맞춰 카테고리별 비중을 다시 잡았다.</p>
+      <p>아래 카테고리별 상세 질문과 모범 답변은 <strong>Q&A 연습</strong> 탭에서 카드로 학습할 수 있다.</p>
       <ul>
-        <li><strong>A · 자기소개 / 지원 동기</strong> — 첫 5~7분 (Q1, Q2). <em>회사 제공 리소스 인용 패턴</em>을 자연스럽게 녹일 것</li>
-        <li><strong>B · BAT 경험 검증</strong> — 핵심 영역, 25~30분 (Q3, Q4, Q5, Q6)</li>
-        <li><strong>C · JD-Andrew 갭 검증</strong> — 기술 인터뷰 비중이 높아진 만큼 더 디테일 (Q7, Q8)</li>
+        <li><strong>A · 자기소개 / 지원 동기</strong> — 첫 5분에 무조건 나옴 (Q1, Q2)</li>
+        <li><strong>B · BAT 경험 검증</strong> — 가장 깊이 들어감, 20~30분 소요 (Q3, Q4, Q5, Q6)</li>
+        <li><strong>C · JD-Andrew 갭 검증</strong> — 불편하지만 100% 나옴 (Q7, Q8)</li>
         <li><strong>D · TPM의 사고방식 검증</strong> (Q9, Q10)</li>
-        <li><strong>E · 역질문</strong> — 8~12분</li>
+        <li><strong>E · 역질문</strong> — 10~15분, 면접의 절반</li>
       </ul>
       <div class="quick-actions">
         <button class="quick-btn" onclick="switchPane('quiz')">→ Q&amp;A 연습으로 이동</button>
@@ -1395,7 +1101,7 @@
 
   <div class="section" id="sec-counter">
     <div class="section-header">
-      <span class="section-num mono">05</span>
+      <span class="section-num mono">04</span>
       <h2 class="section-title serif">역질문 5개</h2>
     </div>
     <div class="section-content">
@@ -1427,7 +1133,7 @@
 
   <div class="section" id="sec-checklist">
     <div class="section-header">
-      <span class="section-num mono">06</span>
+      <span class="section-num mono">05</span>
       <h2 class="section-title serif">인터뷰 직전 30분 체크리스트</h2>
     </div>
     <div class="section-content">
@@ -1448,7 +1154,7 @@
 
   <div class="section" id="sec-meta-eval">
     <div class="section-header">
-      <span class="section-num mono">07</span>
+      <span class="section-num mono">06</span>
       <h2 class="section-title serif">면접관이 평가하고 있을 3가지</h2>
     </div>
     <div class="section-content">
@@ -1476,7 +1182,7 @@
   </div>
 
   <div class="quiz-controls">
-    <button class="filter-btn active" data-filter="all">전체 12</button>
+    <button class="filter-btn active" data-filter="all">전체 10</button>
     <button class="filter-btn" data-filter="A">A · 자기소개</button>
     <button class="filter-btn" data-filter="B">B · BAT 검증</button>
     <button class="filter-btn" data-filter="C">C · JD 갭</button>
@@ -1496,43 +1202,16 @@
 
   <div class="cheat-grid">
 
-    <div class="cheat-card span-2">
-      <div class="cheat-label">D-2 · 5월 8일 (금) 16:00</div>
-      <div class="cheat-headline serif">45분, <em>기술 인터뷰</em></div>
-      <div class="cheat-body">
-        시간 분배 추정 · 자기소개 5~7분 · 기술 검증 25~30분 · 역질문 8~12분.<br>
-        <strong>"JD 및 제출 서류 기반"</strong>이라고 명시 — 이력서 / 자기소개서에 적은 모든 구체 명사가 검증 대상.
-      </div>
-    </div>
-
-    <div class="cheat-card span-2">
-      <div class="cheat-label">회사 제공 리소스 인용 패턴 · 강력 차별화</div>
-      <div class="cheat-headline serif">"보내주신 <em>Pleos 25 키노트</em>에서…"</div>
-      <div class="cheat-body" style="line-height: 1.65;">
-        지원 동기나 "보내주신 자료 보셨어요?" 질문에서 자연스럽게 인용. 면접관에게 즉시 시그널되는 메시지 →
-        <em>"이 사람은 우리 자료를 정독했고, 본인 맥락에서 해석했다."</em><br>
-        구체 인용 거리 → 송창현 사장 "이동의 개념 재정의" / 26개 개발사 베타 앱 사전 공개 / 2026 Q2 → 2030 2,000만 대.
-      </div>
-    </div>
-
     <div class="cheat-card stat-card">
       <div class="cheat-label">양산 일정</div>
       <div class="cheat-headline">2026 <em>Q2</em></div>
-      <div class="cheat-body">Pleos Connect 탑재 첫 신차 출시 시점. 이미 발표된 일정.</div>
+      <div class="cheat-body">Pleos Connect 탑재 첫 신차 출시 시점. 이미 발표된 일정이라 변경 불가.</div>
     </div>
 
     <div class="cheat-card stat-card">
       <div class="cheat-label">확장 목표</div>
       <div class="cheat-headline">20<em>M</em> 대</div>
       <div class="cheat-body"><strong>2030년까지 2,000만 대</strong> 확대 적용. 5년에 걸친 스케일업이 platform 표준화 압력의 본질.</div>
-    </div>
-
-    <div class="cheat-card span-2">
-      <div class="cheat-label">Pleos Playground 그룹 정의 · 채용담당자 안내 메시지 인용</div>
-      <div class="cheat-headline serif">App Market <em>+</em> 데이터 제품 <em>+</em> 비즈니스 운영</div>
-      <div class="cheat-body">
-        <strong>완성차 제조가 아니라 플랫폼 비즈니스</strong>. BAT의 D2C + Adobe Commerce + 다중 벤더 + 글로벌 파트너 경험이 직접 적용되는 영역. 인터뷰에서 <em>"저는 자동차를 모르지만"</em>으로 시작하지 말고 <em>"플랫폼 비즈니스 운영 경험"</em>으로 시작할 것.
-      </div>
     </div>
 
     <div class="cheat-card span-2">
@@ -1665,15 +1344,14 @@ const quizData = [
     cat: 'A',
     catLabel: 'A · 자기소개',
     q: '자기소개 부탁드립니다.',
-    strategy: '<strong>45분 인터뷰 → 60초가 안전 상한.</strong> 이력서 시간순 나열 ❌. <strong>현재 → 과거 핵심 → 지원 이유</strong> 3블록.',
+    strategy: '<strong>60~90초.</strong> 이력서 시간순 나열 ❌. <strong>현재 → 과거 핵심 → 지원 이유</strong> 3블록.',
     a: `<p>현재 BAT에서 한국과 일본 두 시장의 D2C 디지털 마케팅 플랫폼을 PM으로 맡고 있습니다. 이 일의 본질은 시장마다 따로 짓던 이커머스를 하나의 글로벌 Adobe 스택 위에 표준화하면서, 각 시장이 필요한 차이만 모듈로 덧붙이는 구조로 재편하는 작업입니다.</p>
-<p>이전에는 Elice라는 에듀테크 스타트업에서 K-12 AI LMS의 PM 팀장으로, 교육부 RFP에 맞춰 프로토타입을 구축해 9억 규모 연구과제를 수주한 경험이 있고, 그 전 TikTok과 삼성SDS 런던 지사에서 Trust&amp;Safety 데이터 분석과 RPA PoC를 다뤘습니다.</p>
-<p>이번에 Pleos Playground TPM JD를 보고, <strong>차종별로 반복되는 인증을 플랫폼 단위 표준으로 전환한다는 문제의식이 제가 BAT에서 지난 2년간 매일 풀어온 문제와 정확히 같은 형태</strong>라고 느꼈고, 그래서 지원하게 됐습니다.</p>`,
+<p>이전에는 Elice라는 에듀테크 스타트업에서 K-12 AI LMS의 PM 팀장으로, 교육부 RFP에 맞춰 프로토타입을 구축해 9억 규모 연구과제를 수주하고 양산까지 끌고 간 경험이 있고, 그 전 TikTok과 삼성SDS 런던 지사에서 Trust&amp;Safety 데이터 분석과 RPA PoC를 다뤘습니다.</p>
+<p>이번에 42dot Platform TPM JD를 보고, <strong>차량별로 반복되는 인증을 플랫폼 단위 표준으로 전환한다는 문제의식이 제가 BAT에서 지난 2년간 매일 풀어온 문제와 정확히 같은 형태</strong>라고 느꼈고, 그래서 지원하게 됐습니다.</p>`,
     keypoints: [
-      '60초 타임 박스 — 45분 인터뷰에서 90초는 너무 길다',
       '"지난 2년간 매일 풀어온 문제와 같은 형태" — JD 키워드를 자연어로 거꾸로 매핑',
-      '"Pleos Playground"라고 정확히 호명 — 회사 그룹명을 알고 있음을 시그널',
-      '회사 이름 외 디테일(MAU, 9억) 섞어서 구체성 확보'
+      '회사 이름 외 디테일(MAU, 9억) 섞어서 구체성 확보',
+      '60~90초 타임 박스 — 길어지면 첫인상이 흐려진다'
     ]
   },
   {
@@ -1681,17 +1359,15 @@ const quizData = [
     cat: 'A',
     catLabel: 'A · 지원 동기',
     q: '왜 42dot에 지원하셨어요? / 왜 자동차로 도메인을 옮기시나요?',
-    strategy: '자기소개서 마지막 단락 그대로 말하지 말 것. 더 솔직한 톤으로. <strong>회사 제공 리소스(Pleos 25 키노트)를 자연스럽게 인용</strong>하면 큰 차별화.',
+    strategy: '자기소개서 마지막 단락 그대로 말하지 말 것. 더 솔직한 톤으로 한 단계 더 들어가기.',
     a: `<p>두 가지 이유입니다.</p>
 <p><strong>첫째, 문제의 결이 맞다고 판단해서</strong>입니다. 42dot이 지향하는 Platform-level Certification은 차종이 늘어날수록 인증·검증을 매번 반복하지 않아도 되도록 표준 체계를 만드는 일인데, 제가 BAT에서 매일 다루는 문제 — 시장이 늘어날수록 마케팅 플랫폼을 매번 다시 짓지 않아도 되도록 표준화하는 일 — 과 구조적으로 같습니다.</p>
-<p><strong>둘째, 일정의 절박성</strong>입니다. <em>(자연스러운 인용)</em> 보내주신 Pleos 25 키노트에서 송창현 사장님이 "2026년 2분기 첫 신차 → 2030년 2,000만 대"라는 스케일업 일정을 말씀하시는 부분을 봤는데, 이 5년의 확장이 가능하려면 차종별 반복 검증을 표준 인증 체계로 전환하는 일이 필수일 수밖에 없겠다는 생각이 들었습니다. 그 과제 한복판에서 일하고 싶다는 게 더 직접적인 동기입니다.</p>
-<p>자동차는 저에게 처음입니다. 다만 Pleos Playground 그룹이 다루는 영역 — App Market, 데이터 제품, 그 위의 비즈니스 운영 — 은 본질적으로 <strong>플랫폼 비즈니스</strong>이고, 제가 BAT에서 다중 벤더와 다중 시장을 가로지르며 운영해온 D2C 플랫폼 경험이 직접 적용될 수 있는 영역이라고 봤습니다. 도메인 학습 곡선은 제가 감당해야 할 몫이고, 회사가 풀려는 문제의 형태에 제 궤적이 맞다는 것이 본질적 fit이라고 생각합니다.</p>`,
+<p><strong>둘째, 일정의 절박성</strong>입니다. Pleos Connect가 2026년 2분기 출시 신차에 들어가고 2030년까지 2천만 대로 확대된다고 발표하셨는데, 이 5년의 스케일업이 가능하려면 차종별 반복 검증을 표준 인증 체계로 전환하는 일이 필수일 거라고 이해했습니다. 그 과제 한복판에서 일하고 싶다는 게 더 직접적인 동기입니다.</p>
+<p>자동차는 저에게 처음입니다. 다만 지난 5~6년간 에듀테크, 소셜, FMCG로 도메인을 옮기면서 배운 건, <strong>좋은 TPM의 가치는 도메인 전문성보다 복잡한 요구사항을 표준화 가능한 구조로 재구성하는 사고방식에서 나온다</strong>는 것이었습니다. 도메인 학습 곡선은 제가 감당해야 할 몫이라고 생각합니다.</p>`,
     keypoints: [
-      '"보내주신 Pleos 25 키노트" — 회사 제공 리소스를 시청한 시그널 (강력)',
-      '2026 Q2 / 2,000만 대 / 2030 수치 직접 언급',
-      '"플랫폼 비즈니스" 프레이밍 — "자동차 회사"가 아닌 "플랫폼 비즈니스"로 인식',
-      '"App Market, 데이터 제품" — 그룹 정의를 정확히 인용',
-      '"저는 자동차를 모르지만"으로 시작하는 약점 프레이밍 ❌'
+      '두 가지 이유로 나누기 — "왜 42dot인가"의 답이 "왜 자동차인가"의 답이기도',
+      '2,000만 대 / 2030년 직접 언급 → "공부하고 옴" 시그널',
+      '도메인 약점은 짧게 인정 후 학습 의지로 마무리'
     ]
   },
   {
@@ -1820,57 +1496,15 @@ const quizData = [
       '결정 자체를 비판하지 말고 "당시엔 합리적이었지만 정보가 부족했다"로',
       '학습으로 마무리 → 그 학습이 지금 어떻게 작동하는지 한 줄'
     ]
-  },
-  {
-    id: 'q11',
-    cat: 'C',
-    catLabel: 'C · 기술 깊이',
-    q: '"보내주신 자료 보셨나요? 어떤 부분이 인상적이었어요?"',
-    strategy: '거의 확실히 나옴. 채용담당자가 자료를 직접 보냈으니 면접관이 "봤는지" 확인하는 건 자연스러운 흐름. <strong>구체 메시지 + 자기 경험 매핑</strong>으로 답할 것.',
-    a: `<p>네, Pleos 25 키노트와 자율주행 영상 모두 봤습니다.</p>
-<p><strong>특히 인상적이었던 건 두 가지</strong>입니다.</p>
-<p><strong>첫째, 송창현 사장님 키노트에서 "사용자 중심의 가치를 더해 이동의 개념을 재정의한다"는 메시지</strong>가 인상적이었습니다. SDV의 본질이 단순히 차량 OS를 바꾸는 게 아니라 차량을 <em>지속적으로 개선되는 플랫폼</em>으로 바꾸는 일이라는 framing이, 제가 BAT에서 일본·한국 이커머스를 글로벌 플랫폼으로 통합할 때 느꼈던 "각 시장이 따로 짓는 구조 → 함께 진화하는 구조"의 전환과 같은 결의 변화라고 느꼈습니다.</p>
-<p><strong>둘째, Pleos Playground가 26개 개발사와 베타 앱을 사전 공개한 부분</strong>이 인상적이었습니다. 단순히 "차량용 앱 마켓을 만들었다"가 아니라 외부 개발자 생태계를 양산 일정과 동시에 키우고 있다는 뜻이고, 이건 곧 <em>App Market의 인증 표준이 외부 개발자도 따라올 수 있는 명확성을 가져야 한다</em>는 도전이라고 봤습니다. 제가 지원한 Platform TPM 포지션의 핵심 과제 중 하나일 것 같습니다.</p>`,
-    keypoints: [
-      '"봤습니다" + 구체 디테일 (송창현 사장 / 26개 개발사) — 진짜 봤다는 증거',
-      '단순 감상문 X — 본 내용을 자기 경험과 매핑하는 사고 시현',
-      '두 가지 인상적인 부분으로 구조화 → 답변 길이 통제',
-      '이 답변 하나로 면접관이 "이 사람은 우리 자료를 정독하고 본인 맥락에서 해석했다"는 인상'
-    ]
-  },
-  {
-    id: 'q12',
-    cat: 'C',
-    catLabel: 'C · 기술 깊이',
-    q: 'CI/CD 파이프라인을 직접 운영해보신 경험이 있나요? 어떤 단계를 어떻게 자동화하셨나요?',
-    strategy: 'JD에 명시된 "CI/CD 파이프라인 이해도" 직접 검증. 코드 레벨 운영 경험은 없으니 <strong>"PM 관점에서 파이프라인 설계에 어떻게 관여했는지"</strong>로 답해야 함.',
-    a: `<p>코드 레벨에서 Jenkins나 GitHub Actions YAML을 직접 짜는 일을 일상적으로 하지는 않습니다. PM 관점에서 파이프라인 설계와 거버넌스에 관여합니다.</p>
-<p>BAT에서는 Azure DevOps 기반으로 vendor sprint와 release pipeline을 운영합니다. 구체적으로 제가 의사결정에 관여한 부분은 <strong>"어떤 단계를 자동화하고 어떤 단계를 수동 게이트로 남길지"</strong>입니다.</p>
-<p>예를 들어 일본 myGlo의 경우:</p>
-<ul style="padding-left: 18px; margin: 8px 0;">
-<li style="margin-bottom: 4px;"><strong>자동화 단계</strong> · 빌드 / 단위 테스트 / staging 배포 / smoke test</li>
-<li style="margin-bottom: 4px;"><strong>수동 게이트</strong> · UAT 결함 분류 (앞서 말씀드린 'business logic 위반 vs UX 일관성 vs edge case' 분류) → 분류마다 release blocker 여부에 대한 합의가 필요해서 자동화하면 오히려 risk</li>
-<li><strong>운영 자동화</strong> · production release는 일정한 release window 안에서 자동 실행, rollback trigger는 알람과 사람의 판단 결합</li>
-</ul>
-<p>개인적으로는 사이드 프로젝트(Next.js + Supabase)에서 GitHub Actions 기반 자동 배포와 lint / test 게이트를 직접 운영하고 있어서, 개발자가 PR을 올렸을 때 어떤 신호가 어떻게 흘러가는지의 mental model은 가지고 있습니다.</p>
-<p>Jira / Gerrit은 직접 운영해본 적은 없지만, ADO에서 운영하는 기본 개념 — branch policy, build validation, release gate — 이 거의 1:1 대응되는 도구라고 알고 있어서 학습 곡선은 길지 않을 거라고 봅니다.</p>`,
-    keypoints: [
-      '"코드 레벨 직접 운영"과 "PM 관점 거버넌스 운영"을 명확히 구분',
-      '자동화 / 수동 게이트의 trade-off 사고 시현 (Q9 PM vs TPM과 일관)',
-      '구체 단계 (빌드 / UAT / release window / rollback) 분류',
-      '사이드 프로젝트 GitHub Actions 언급 → "직접 만져본 사람"임을 한 줄 추가',
-      '도구 학습은 "길지 않다"로 단호하게 마무리'
-    ]
   }
 ];
 
 /* ============================================
    STATE & RENDERING
 ============================================ */
-const STORAGE_KEY = '42dot-prep-v2';
+const STORAGE_KEY = '42dot-prep-v1';
 let state = {
   studied: {},
-  resourceDone: {},
   theme: 'light',
   currentPane: 'browse'
 };
@@ -1958,57 +1592,6 @@ function switchPane(name) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function initDdayCounter() {
-  // Interview: 2026-05-08 16:00 KST
-  const target = new Date('2026-05-08T16:00:00+09:00');
-  const update = () => {
-    const now = new Date();
-    const diffMs = target - now;
-    const el = document.getElementById('ddayCounter');
-    if (!el) return;
-    if (diffMs <= 0) {
-      const past = Math.abs(diffMs);
-      const hours = Math.floor(past / (1000 * 60 * 60));
-      el.textContent = `INTERVIEW · 2026.05.08 (FRI) 16:00`;
-      return;
-    }
-    const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    if (days >= 1) {
-      el.textContent = `D-${days} · 2026.05.08 (FRI) 16:00`;
-    } else {
-      el.textContent = `D-DAY · ${hours}h 후 · 16:00`;
-    }
-  };
-  update();
-  setInterval(update, 60000); // every minute
-}
-
-function initResourceList() {
-  document.querySelectorAll('.resource-item').forEach(item => {
-    const id = item.dataset.id;
-    if (state.resourceDone[id]) {
-      item.classList.add('checked');
-    }
-    item.addEventListener('click', (e) => {
-      // ignore clicks on the link itself (to actually navigate)
-      if (e.target.tagName === 'A') return;
-      state.resourceDone[id] = !state.resourceDone[id];
-      saveState();
-      item.classList.toggle('checked', !!state.resourceDone[id]);
-      updateResourceCount();
-    });
-  });
-  updateResourceCount();
-}
-
-function updateResourceCount() {
-  const el = document.getElementById('resourceDoneCount');
-  if (!el) return;
-  const count = Object.values(state.resourceDone).filter(Boolean).length;
-  el.textContent = count;
-}
-
 /* ============================================
    INIT
 ============================================ */
@@ -2017,8 +1600,6 @@ document.addEventListener('DOMContentLoaded', () => {
   applyTheme();
   renderQuiz();
   updateProgress();
-  initDdayCounter();
-  initResourceList();
 
   // Theme toggle
   document.getElementById('themeToggle').addEventListener('click', () => {
@@ -2043,14 +1624,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Reset progress
   document.getElementById('resetBtn').addEventListener('click', () => {
-    if (confirm('학습 진행도와 리소스 체크를 모두 초기화할까?')) {
+    if (confirm('학습 진행도를 초기화할까?')) {
       state.studied = {};
-      state.resourceDone = {};
       saveState();
       updateProgress();
       renderQuiz(document.querySelector('.filter-btn.active')?.dataset.filter || 'all');
-      document.querySelectorAll('.resource-item').forEach(item => item.classList.remove('checked'));
-      updateResourceCount();
     }
   });
 
