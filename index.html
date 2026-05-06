@@ -1106,9 +1106,124 @@
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--ink-soft); }
+
+  /* === STICKY SIDE NAV (desktop only, Browse mode only) === */
+  .side-nav {
+    display: none;
+  }
+
+  @media (min-width: 1200px) {
+    .side-nav {
+      display: block;
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      left: max(16px, calc((100vw - 920px) / 2 - 220px));
+      width: 180px;
+      z-index: 40;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .side-nav.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .side-nav-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--ink-soft);
+      margin-bottom: 12px;
+      padding-left: 12px;
+    }
+
+    .side-nav-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      border-left: 1px solid var(--line-subtle);
+    }
+
+    .side-nav-item {
+      display: block;
+    }
+
+    .side-nav-link {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      padding: 5px 10px 5px 12px;
+      text-decoration: none;
+      color: var(--ink-soft);
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 1.35;
+      transition: all 0.2s ease;
+      border-left: 2px solid transparent;
+      margin-left: -1px;
+    }
+
+    .side-nav-link:hover {
+      color: var(--ink-muted);
+    }
+
+    .side-nav-link.active {
+      color: var(--accent);
+      border-left-color: var(--accent);
+      font-weight: 600;
+    }
+
+    .side-nav-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+      min-width: 20px;
+      opacity: 0.6;
+    }
+
+    .side-nav-link.active .side-nav-num {
+      opacity: 1;
+    }
+
+    .side-nav-text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .side-nav-badge {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 8px;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      margin-left: 2px;
+      flex-shrink: 0;
+    }
+  }
 </style>
 </head>
 <body>
+
+<!-- Desktop sticky side nav (Browse mode only) -->
+<nav class="side-nav hidden" id="sideNav" aria-label="섹션 내비게이션">
+  <div class="side-nav-label">Browse</div>
+  <ul class="side-nav-list">
+    <li class="side-nav-item"><a href="#sec-meta" class="side-nav-link" data-section="sec-meta"><span class="side-nav-num">01</span><span class="side-nav-text">인터뷰의 의미</span></a></li>
+    <li class="side-nav-item"><a href="#sec-context" class="side-nav-link" data-section="sec-context"><span class="side-nav-num">02</span><span class="side-nav-text">회사 컨텍스트</span></a></li>
+    <li class="side-nav-item"><a href="#sec-playground" class="side-nav-link" data-section="sec-playground"><span class="side-nav-num">03</span><span class="side-nav-text">Playground 실체</span></a></li>
+    <li class="side-nav-item"><a href="#sec-strategy" class="side-nav-link" data-section="sec-strategy"><span class="side-nav-num">04</span><span class="side-nav-text">플랫폼 고도화</span></a></li>
+    <li class="side-nav-item"><a href="#sec-ecosystem" class="side-nav-link" data-section="sec-ecosystem"><span class="side-nav-num">04-B</span><span class="side-nav-text">생태계 개선</span><span class="side-nav-badge">[나]</span></a></li>
+    <li class="side-nav-item"><a href="#sec-questions" class="side-nav-link" data-section="sec-questions"><span class="side-nav-num">05</span><span class="side-nav-text">예상 질문</span></a></li>
+    <li class="side-nav-item"><a href="#sec-counter" class="side-nav-link" data-section="sec-counter"><span class="side-nav-num">06</span><span class="side-nav-text">역질문 5개</span></a></li>
+    <li class="side-nav-item"><a href="#sec-checklist" class="side-nav-link" data-section="sec-checklist"><span class="side-nav-num">07</span><span class="side-nav-text">30분 체크리스트</span></a></li>
+    <li class="side-nav-item"><a href="#sec-meta-eval" class="side-nav-link" data-section="sec-meta-eval"><span class="side-nav-num">08</span><span class="side-nav-text">면접관 평가축</span></a></li>
+  </ul>
+</nav>
+
 
 <header class="site">
   <div class="header-row">
@@ -2589,15 +2704,66 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Smooth scroll for TOC
-  document.querySelectorAll('.toc-link').forEach(link => {
+  // Smooth scroll for TOC + side nav
+  document.querySelectorAll('.toc-link, .side-nav-link').forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
       const target = document.querySelector(link.getAttribute('href'));
       if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
+
+  // Side nav — scroll spy with Intersection Observer
+  initSideNav();
 });
+
+function initSideNav() {
+  const sideNav = document.getElementById('sideNav');
+  if (!sideNav) return;
+
+  const sectionIds = [
+    'sec-meta', 'sec-context', 'sec-playground', 'sec-strategy',
+    'sec-ecosystem', 'sec-questions', 'sec-counter', 'sec-checklist', 'sec-meta-eval'
+  ];
+  const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+  const links = sideNav.querySelectorAll('.side-nav-link');
+
+  // Show/hide based on active pane
+  function updateSideNavVisibility() {
+    const browsePane = document.getElementById('pane-browse');
+    const isBrowseActive = browsePane && browsePane.classList.contains('active');
+    sideNav.classList.toggle('hidden', !isBrowseActive);
+  }
+
+  // Patch switchPane to update side nav visibility
+  const originalSwitchPane = window.switchPane;
+  window.switchPane = function(name) {
+    originalSwitchPane(name);
+    updateSideNavVisibility();
+  };
+  updateSideNavVisibility();
+
+  // Intersection Observer for scroll spy
+  let currentActive = null;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        if (currentActive !== id) {
+          currentActive = id;
+          links.forEach(link => {
+            link.classList.toggle('active', link.dataset.section === id);
+          });
+        }
+      }
+    });
+  }, {
+    rootMargin: '-20% 0px -60% 0px',
+    threshold: 0
+  });
+
+  sections.forEach(section => observer.observe(section));
+}
 </script>
 
 </body>
