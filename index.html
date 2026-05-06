@@ -1223,6 +1223,7 @@
       <a href="#sec-context" class="toc-link"><span class="toc-num">02</span>회사 컨텍스트</a>
       <a href="#sec-playground" class="toc-link"><span class="toc-num">03</span>Pleos Playground 그룹의 실체</a>
       <a href="#sec-strategy" class="toc-link"><span class="toc-num">04</span>플랫폼 고도화 전략 · TPM 관점</a>
+      <a href="#sec-ecosystem" class="toc-link"><span class="toc-num">04-B</span>개발자 생태계 개선 아이디어 <span style="font-size:10px;color:var(--accent);font-family:'IBM Plex Mono',monospace;">[나의 관점]</span></a>
       <a href="#sec-questions" class="toc-link"><span class="toc-num">05</span>예상 질문 카테고리</a>
       <a href="#sec-counter" class="toc-link"><span class="toc-num">06</span>역질문 5개</a>
       <a href="#sec-checklist" class="toc-link"><span class="toc-num">07</span>직전 30분 체크리스트</a>
@@ -1562,6 +1563,69 @@
       </div>
       <div class="callout">
         <strong>옵션 B — Discovery 질문으로 전환 (더 강한 시그널)</strong> · "SDK가 이미 modular하게 분리되어 있다면, platform-level 표준화가 풀려는 진짜 어려운 문제는 SDK 간 버전 호환성 매트릭스나 OTA를 감안한 migration 경로 같은 차원일 것 같습니다. 실제로 내부에서 가장 critical하게 보고 있는 platform-level 문제가 어느 쪽인가요?" → "내가 답을 안다"가 아닌 <em>"내가 문제 구조를 정확히 인지한다"</em>는 시그널. 이게 실제 TPM의 일.
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 섹션 04-B · 개발자 생태계 개선 아이디어 ========== -->
+  <div class="section" id="sec-ecosystem">
+    <div class="section-header">
+      <span class="section-num mono">04-B</span>
+      <h2 class="section-title serif">개발자 생태계 개선 아이디어</h2>
+    </div>
+    <div class="section-content">
+      <div class="callout">
+        <strong>이 섹션의 성격</strong> · Pleos 25 키노트를 직접 보고 떠오른 <em>나의 관점</em>. 면접에서 "플랫폼을 어떻게 고도화할 것인가" 질문이 나왔을 때 꺼낼 수 있는 차별화 인사이트다. 섹션 04의 TPM 기술 전략과 함께 읽을 것.
+      </div>
+
+      <h3>① 개발자 온보딩 — 차량 플랫폼 특유의 투명성 문제</h3>
+      <p>Pleos Playground는 신생 마켓플레이스다. 삼성의 타이젠·바다OS처럼 초반에 대형 파트너를 유치했더라도, <strong>결국 생태계를 만드는 건 개인 개발자와 중소 개발사의 트래픽</strong>이다. 그런데 차량은 모바일과 근본적으로 다른 제약이 있다 — <strong>하드웨어 교체 주기가 극히 길다.</strong></p>
+      <p>개발자 입장에서 앱 기획 단계에 가장 먼저 알고 싶은 것은 다음이다.</p>
+      <table class="info-table">
+        <thead>
+          <tr><th>개발자의 질문</th><th>현재 Playground에서 찾을 수 있는가?</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>내 앱이 지원되는 차종·모델·연식</td><td>명확하지 않음</td></tr>
+          <tr><td>해당 차종의 예상 등록 대수 (시장 크기)</td><td>공개 안 됨</td></tr>
+          <tr><td>OS 메이저 업그레이드 지원 횟수 (SLA)</td><td>정책 없음</td></tr>
+          <tr><td>SDK 버전 지원 종료(EOL) 일정</td><td>명확하지 않음</td></tr>
+        </tbody>
+      </table>
+      <p>"이 차량군을 타겟으로 앱을 만들면 향후 4년간 50만 명 유저에게 닿을 수 있고, OS 메이저 업그레이드 2회까지 내 앱이 지원된다" 는 계산이 가능해야 처음부터 투자 결정이 선다. 이 정보가 없으면 <em>기획 단계에서 이미 포기</em>하게 된다.</p>
+      <div class="callout">
+        <strong>TPM 액션</strong> · 차종별 예상 등록 대수 로드맵 + SDK/OS 버전 지원 SLA를 개발자 센터의 상시 공개 정보로 만드는 것. 카카오디벨로퍼스식 구성에서 차량 특유의 <em>하드웨어 수명주기 투명성</em>으로 차별화.
+      </div>
+
+      <h3>② 결제 생태계 — 앱스토어가 성공한 진짜 이유</h3>
+      <p>대형 개발사 입장에서 앱을 만드는 이유는 <strong>자사 DB 확보</strong>와 <strong>결제 수익</strong>, 개인 개발자 입장에서는 <strong>결제 수익과 광고</strong>다. 앱스토어 생태계가 성공한 핵심 이유 중 하나는 플랫폼 초창기부터 <strong>비교적 심리스한 결제 연동</strong>을 투명한 수익 셰어 모델과 함께 제공했기 때문이다.</p>
+      <ul>
+        <li>Pleos에는 <strong>인카 페이먼트(In-Car Payment)</strong> 인프라가 있다 — 애플페이에 대항하는 포지셔닝이 가능한 자산.</li>
+        <li>레거시 문제 · ccNC 등 구버전 OS에 얽힌 결제 레거시를 Pleos 생태계로 어떻게 마이그레이션할지가 핵심 과제.</li>
+        <li>개발자 입장에서 명확한 수익 셰어 정책(예: 앱 내 결제의 X%, 구독 Y%)이 공개되지 않으면 앱 개발 ROI를 계산할 수 없다.</li>
+      </ul>
+      <div class="callout callout-warning">
+        <strong>TPM 액션 방향</strong> · 인카 페이먼트 API를 Playground SDK에 공식 통합 + 결제 수익 셰어 정책을 Day 1부터 투명하게 공개. 결제가 붙어야 개발자 생태계가 돌아간다.
+      </div>
+
+      <h3>③ 에뮬레이터 — Xcode 전략에서 배울 것</h3>
+      <p>"소프트웨어 테스트는 에뮬레이터, 실차 연동은 DevBox"라는 방향은 맞다. 그런데 개발 생태계 표준화의 핵심은 에뮬레이터가 <strong>어떤 차량군(Group)을 시뮬레이션하는가</strong>다.</p>
+      <p>Xcode가 사용성이 나쁘다는 평가를 받음에도 개발자들이 포기 못 하는 이유는 단 하나 — <strong>"어느 세대, 어떤 디바이스와 호환되고 어디서 끊기는지" 정확히 확인 가능</strong>하기 때문이다.</p>
+      <table class="info-table">
+        <thead>
+          <tr><th>Xcode 모델</th><th>Pleos에 적용하면</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>iPhone 15 / 14 / 13... 세대별 에뮬레이터</td><td>A환경 차량군 / B환경 차량군 / C환경 차량군 에뮬레이터</td></tr>
+          <tr><td>iOS 버전별 호환성 매트릭스</td><td>Pleos OS 버전별 호환성 매트릭스</td></tr>
+          <tr><td>"이 기능은 iOS 16 이상에서만" 자동 경고</td><td>"이 SDK API는 Pleos 2.x 이상 차량군에서만" 자동 경고</td></tr>
+        </tbody>
+      </table>
+      <div class="callout">
+        <strong>단서</strong> · 레거시 차량(SDV 이전)은 호환성 보장이 구조적으로 어렵다. 애플이 구버전 iOS 지원을 과감히 끊듯, <strong>Pleos 탑재 차량부터만</strong> 이 호환성 그룹화 체계를 적용하는 것이 현실적이고 올바른 선택일 수 있다.
+      </div>
+      <div class="callout callout-warning">
+        <strong>면접 활용법</strong> · 이 세 가지 아이디어를 "제가 합류하면 이걸 하겠다"로 꺼내면 위험. 대신 역질문 또는 "Pleos 25를 보고 생각한 것"을 물을 때 꺼낼 것. "개발자 입장에서 온보딩 정보 투명성이 어느 수준인지 궁금한데, 내부에서 이미 계획 중인 부분이 있나요?" 형태가 더 강하다.
       </div>
     </div>
   </div>
