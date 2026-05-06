@@ -1405,19 +1405,21 @@
 
       <h3>1단계 · 플랫폼 아키텍처 고도화</h3>
 
-      <h4>SDK를 레고 블록처럼 쪼개기 — 마이크로 SDK 아키텍처</h4>
-      <p>지금은 Vehicle SDK, NaviHelper SDK 등이 개별적으로 제공되고 있고, Fused Location SDK는 Coming Soon 상태다. 개발자가 하나의 기능만 필요해도 SDK 전체를 가져와야 하는 상황이 생길 수 있다.</p>
-      <p>이걸 <strong>공통 코어 레이어 위에 플러그인 방식</strong>으로 재설계하면 —</p>
+      <div class="callout callout-warning">
+        <strong>짚어두기</strong> · Pleos Playground는 이미 Vehicle SDK / NaviHelper SDK / Fused Location SDK로 분리해 제공하고 있다 — 이건 이미 <strong>modular SDK 설계</strong>가 아키텍처 차원에서 구현된 상태라는 뜻. "SDK를 쪼개자"는 제안은 회사가 이미 하고 있는 일을 모르고 하는 말이 된다. 외부에서 보고 "구조를 파악했다"고 말하려면 한 단계 더 들어가야 한다.
+      </div>
+
+      <h4>진짜 어려운 문제 — SDK 간 버전 호환성 매트릭스</h4>
+      <p>SDK를 쪼갠 이후에 실제로 어려워지는 건 <strong>"임의로 조합된 SDK 버전이 임의의 차종·OS 버전에서 제대로 동작하는지 보장"</strong>하는 일이다. Vehicle SDK v1.2 + NaviHelper SDK v0.8 + Fused Location SDK v0.1 조합을 26개 베타 개발사가 각자 다른 버전으로 쓰기 시작하면, 인증해야 할 차종 × SDK 버전 × OS 버전의 cross-product가 폭발적으로 늘어난다.</p>
       <ul>
-        <li><strong>개발자</strong> → "나는 내비 기능만 필요해요"라고 하면 그 부분만 가져다 쓸 수 있다. 앱이 가벼워진다.</li>
-        <li><strong>플랫폼 측</strong> → SDK별 독립 릴리즈 사이클 운영 가능. 한 부분에 문제가 생겨도 전체가 멈추지 않는다.</li>
-        <li><strong>Time-to-Market 단축</strong> → 새 SDK를 기존 코어 위에 올리기만 하면 되니까 출시 속도가 빨라진다.</li>
+        <li>차종별로 인증을 <strong>반복</strong>하면 2030년 2,000만 대 목표를 맞출 수 없다 — JD의 "Platform-level Certification"이 풀려는 진짜 문제가 이 차원일 가능성이 높다.</li>
+        <li>이 문제를 다루려면 "SDK를 쪼개는 설계" 자체가 아니라 <strong>공통 코어 레이어의 추상화 수준 설정</strong>, <strong>버전 호환성 매트릭스 관리</strong>, <strong>SDK 간 의존성 그래프</strong>가 핵심 과제다.</li>
       </ul>
 
-      <h4>버전 관리 규칙 명문화</h4>
-      <p>SDK는 계속 업데이트되는데, 개발자 입장에서는 "내가 쓰던 기능이 갑자기 사라지면?"이라는 불안이 항상 있다. <strong>SemVer 기반 버전 정책 + Deprecation Policy(최소 2개 메이저 버전 호환 보장)</strong>를 명문화하면 OEM 파트너들이 안심하고 장기 프로젝트를 맡길 수 있다.</p>
+      <h4>SDK upgrade migration 경로 — 차량의 OTA 주기를 고려해야 하는 이유</h4>
+      <p>모바일 생태계에서도 SDK v1 → v2 migration이 가장 어렵다고 꼽히는 이유는, 이미 출시된 앱들의 하위 호환성을 유지하면서 구버전을 퇴장시켜야 하기 때문이다. 차량은 이게 더 까다롭다 — <strong>OTA 업데이트 주기가 모바일보다 길고, 차종별 OTA 정책도 다르다</strong>. 어떤 차종은 OTA가 제조사 서비스 센터 방문 시에만 이루어지는 경우도 있다.</p>
       <div class="callout">
-        <strong>BAT 경험 매핑</strong> · 이건 내가 BAT에서 Adobe Commerce 컴포넌트 40종을 정의하면서 "어느 컴포넌트가 v1에서 deprecated되고, 어느 게 v2에서 대체되는지" 관리했던 것과 같은 패턴.
+        <strong>BAT 경험 매핑</strong> · BAT에서 Adobe Commerce 컴포넌트 40종의 deprecated 경로를 정의하고 "v1 → v2에서 무엇이 깨지는지" Cognizant 파트너 팀과 협상한 것이 같은 구조. 다만 차량은 OTA 주기 제약이 더 강하다는 차이가 있고, 그 차이가 migration 전략 전체를 바꾼다.
       </div>
 
       <h4>글로벌 표준과의 연결고리 — API 표준 통합</h4>
@@ -1509,7 +1511,15 @@
 
       <h3>한 줄 요약</h3>
       <div class="callout">
-        <strong>SDK는 레고 블록처럼 쪼개고, 인증은 4단계 관문으로 명확히 하고, 자동화와 자가 진단 도구로 속도를 높이며, 신뢰 등급제로 효율을 챙긴다</strong> — 이것이 Pleos Playground를 한 단계 끌어올리기 위한 TPM의 핵심 실행 방향.
+        <strong>인증은 4단계 관문으로 명확히 하고, 자동화와 자가 진단 도구로 속도를 높이며, 신뢰 등급제로 효율을 챙긴다.</strong> 그 바탕에서 진짜 platform-level 문제 — SDK 버전 호환성 매트릭스, OTA를 감안한 migration 경로, 26개 개발사 DX 마찰점의 분류 — 를 정의하는 것이 TPM의 고유 역할.
+      </div>
+
+      <h3>면접에서 이 지식을 꺼내는 방법</h3>
+      <div class="callout callout-warning">
+        <strong>옵션 A — 통째로 빼기 (안전)</strong> · "합류하면 이런 걸 하겠다" 류의 답변은 45분 1차에서 위험. 회사가 이미 하고 있는 일을 "개선안"으로 제시하면 역효과. 경험·trade-off 사고로만 답하고, 이 가설은 면접관이 직접 물을 때만 꺼낼 것.
+      </div>
+      <div class="callout">
+        <strong>옵션 B — Discovery 질문으로 전환 (더 강한 시그널)</strong> · "SDK가 이미 modular하게 분리되어 있다면, platform-level 표준화가 풀려는 진짜 어려운 문제는 SDK 간 버전 호환성 매트릭스나 OTA를 감안한 migration 경로 같은 차원일 것 같습니다. 실제로 내부에서 가장 critical하게 보고 있는 platform-level 문제가 어느 쪽인가요?" → "내가 답을 안다"가 아닌 <em>"내가 문제 구조를 정확히 인지한다"</em>는 시그널. 이게 실제 TPM의 일.
       </div>
     </div>
   </div>
@@ -1782,10 +1792,12 @@
     </div>
 
     <div class="cheat-card span-2">
-      <div class="cheat-label">SDK 고도화 한 줄</div>
-      <div class="cheat-headline serif">레고 블록 <em>×</em> SemVer</div>
+      <div class="cheat-label">SDK는 이미 modular — 진짜 문제는</div>
+      <div class="cheat-headline serif">버전 호환 <em>매트릭스</em></div>
       <div class="cheat-body">
-        마이크로 SDK 아키텍처(공통 코어 + 플러그인) + SemVer 버전 정책 + 2개 메이저 버전 호환 보장 + Cloud Devbox + CI/CD 공식 Action 배포.
+        Vehicle / NaviHelper / Fused Location SDK는 이미 분리 제공 중 → "쪼개자" 제안은 역효과.<br>
+        <strong>진짜 어려운 건</strong> 차종 × SDK 버전 × OS 버전 cross-product 인증 / OTA 주기를 감안한 migration 경로 / 26개 개발사 DX 마찰점 분류.<br>
+        <em>→ 역질문으로 쓸 것</em> : "modular하게 분리된 상태라면, platform-level 표준화가 풀려는 진짜 문제가 어느 차원인지 궁금합니다."
       </div>
     </div>
 
